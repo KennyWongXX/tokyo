@@ -519,6 +519,9 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapOsaka);
 
     function focusMap(lat, lng, region) {
+        // Prevent default anchor behavior
+        event.preventDefault();
+
         var map = region === 'tokyo' ? mapTokyo : mapOsaka;
         var mapId = region === 'tokyo' ? 'map-tokyo' : 'map-osaka';
         
@@ -526,10 +529,12 @@
         var mapElement = document.getElementById(mapId);
         mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
-        map.setView([lat, lng], 16);
-        
-        // Add marker and open popup
-        L.marker([lat, lng]).addTo(map).bindPopup("📍 Here!").openPopup();
+        // Wait for scroll to finish slightly before zooming (smoother UX)
+        setTimeout(function() {
+            map.setView([lat, lng], 16);
+            // Add marker and open popup
+            L.marker([lat, lng]).addTo(map).bindPopup("📍 Here!").openPopup();
+        }, 300);
     }
     
     // Add Markers (Simplified for brevity, but includes key new ones)
