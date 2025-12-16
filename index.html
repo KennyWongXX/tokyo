@@ -532,8 +532,17 @@
         // Wait for scroll to finish slightly before zooming (smoother UX)
         setTimeout(function() {
             map.setView([lat, lng], 16);
-            // Add marker and open popup
-            L.marker([lat, lng]).addTo(map).bindPopup("📍 Here!").openPopup();
+            // Add marker and open popup with Google Maps link
+            var googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
+            var popupContent = `
+                <div style="text-align:center;">
+                    <strong>📍 Here!</strong><br>
+                    <a href="${googleMapsLink}" target="_blank" style="color:blue; text-decoration:underline;">
+                        🚀 Open in Google Maps
+                    </a>
+                </div>
+            `;
+            L.marker([lat, lng]).addTo(map).bindPopup(popupContent).openPopup();
         }, 300);
     }
     
