@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>東京行程 Wishlist 圖片選擇器 (Total: 80+)</title>
+<style>
+    body { font-family: "Microsoft JhengHei", sans-serif; background-color: #f0f2f5; padding: 20px; color: #333; }
+    h1 { text-align: center; margin-bottom: 30px; }
+    .container { max-width: 1000px; margin: 0 auto; }
+    
+    .category-section { background: white; border-radius: 10px; margin-bottom: 30px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .category-header { background-color: #2E74B5; color: white; padding: 15px 20px; font-size: 1.3em; font-weight: bold; }
+    
+    .sub-category-header { background-color: #e3f2fd; color: #1565c0; padding: 10px 20px; font-size: 1.0em; font-weight: bold; border-bottom: 1px solid #bbdefb; display: flex; align-items: center; }
+    .sub-category-header::before { content: "📍"; margin-right: 8px; }
+
+    .item-row { display: flex; align-items: center; border-bottom: 1px solid #eee; padding: 15px; transition: background-color 0.2s; }
+    .item-row:last-child { border-bottom: none; }
+    .item-row:hover { background-color: #f9f9f9; }
+    
+    .item-left { width: 120px; height: 90px; flex-shrink: 0; margin-right: 20px; border-radius: 6px; overflow: hidden; background-color: #eee; cursor: pointer; }
+    .item-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+    .item-left:hover .item-img { transform: scale(1.1); }
+    
+    .item-middle { flex-grow: 1; padding-right: 20px; }
+    .item-title { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; color: #333; }
+    .item-tips { font-size: 0.9em; color: #555; margin-bottom: 3px; display: flex; align-items: center; }
+    .item-tips::before { content: "💡"; margin-right: 5px; }
+    .item-hours { font-size: 0.9em; color: #e65100; margin-bottom: 5px; display: flex; align-items: center; font-weight: 500; }
+    .item-link-container { margin-top: 5px; }
+    .item-link { font-size: 0.85em; color: #2E74B5; text-decoration: none; border: 1px solid #2E74B5; padding: 2px 8px; border-radius: 4px; transition: all 0.2s; display: inline-block; }
+    .item-link:hover { background-color: #2E74B5; color: white; }
+    
+    .item-right { width: 100px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    
+    /* Toggle Switch */
+    .switch { position: relative; display: inline-block; width: 50px; height: 26px; margin-bottom: 5px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+    .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .slider { background-color: #2196F3; }
+    input:focus + .slider { box-shadow: 0 0 1px #2196F3; }
+    input:checked + .slider:before { transform: translateX(24px); }
+    
+    .status-text { font-size: 0.8em; color: #666; }
+    input:checked ~ .status-text { color: #2196F3; font-weight: bold; }
+
+    .summary-box { position: fixed; bottom: 20px; right: 20px; background: #333; color: white; padding: 15px 25px; border-radius: 30px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; font-weight: bold; }
+    
+    /* Modal */
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); }
+    .modal-content { margin: auto; display: block; max-width: 90%; max-height: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+    .close { position: absolute; top: 20px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📸 東京行程 Wishlist 圖片選擇器</h1>
+    <p style="text-align: center; margin-bottom: 30px;">已拆分合併項目並加入營業時間。請勾選你想去的景點。</p>
+
+    <!-- Akihabara -->
+    <div class="category-section">
+        <div class="category-header">⚡ 秋葉原 (Akihabara)</div>
+        
+        <!-- Sub: Radio Kaikan & Station -->
+        <div class="sub-category-header">無線電會館 & 車站周邊 (Radio Kaikan & Station Area)</div>
+        
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/akihabara radio kaikan.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Radio Kaikan (無線電會館)</div>
+                <div class="item-tips">秋葉原必去地標，很多模型店，適合Window Shopping。</div>
+                <div class="item-hours">🕒 10:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Radio+Kaikan+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        
+        <!-- Split: AmiAmi + Kaiyodo + Volks -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/ami ami + kaiyodo hobby lobby tokyo+ vlks doll point akihabara.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">AmiAmi Akihabara</div>
+                <div class="item-tips">二手模型多，價格合理 (Radio Kaikan 4F)。</div>
+                <div class="item-hours">🕒 10:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=AmiAmi+Akihabara+Radio+Kaikan" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/ami ami + kaiyodo hobby lobby tokyo+ vlks doll point akihabara.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Kaiyodo Hobby Lobby</div>
+                <div class="item-tips">海洋堂精緻模型，扭蛋機多 (Radio Kaikan 5F)。</div>
+                <div class="item-hours">🕒 10:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Kaiyodo+Hobby+Lobby+Tokyo" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/ami ami + kaiyodo hobby lobby tokyo+ vlks doll point akihabara.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Volks Doll Point</div>
+                <div class="item-tips">BJD 娃娃專賣，精緻人偶 (Radio Kaikan 8F)。</div>
+                <div class="item-hours">🕒 11:00 - 20:00 (Sat/Sun 10:00~)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Volks+Doll+Point+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tamashii nations store tokyo.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Tamashii Nations Store</div>
+                <div class="item-tips">Bandai 官方魂商店，就在 JR 秋葉原站電氣街口旁。</div>
+                <div class="item-hours">🕒 10:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Tamashii+Nations+Store+Tokyo" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/chabara aki-oka marche.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Chabara Aki-Oka Marche</div>
+                <div class="item-tips">車站高架橋下的食品選物店，集合日本各地特產。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Chabara+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Sub: Chuo-dori & Junk Street -->
+        <div class="sub-category-header">中央通 & 垃圾街 (Chuo-dori & Junk Street)</div>
+
+        <!-- Split: Super Potato + Gacha + Lashinbang -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/super potato akibahara + gacha gacha shop akibahara+ lashinbang akibahara .jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Super Potato</div>
+                <div class="item-tips">懷舊遊戲天堂，3F-5F。</div>
+                <div class="item-hours">🕒 11:00 - 20:00 (Sat/Sun 10:00~)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Super+Potato+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/super potato akibahara + gacha gacha shop akibahara+ lashinbang akibahara .jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Gachapon Kaikan</div>
+                <div class="item-tips">扭蛋會館，數百台扭蛋機。</div>
+                <div class="item-hours">🕒 11:00 - 20:00 (Sun 11:00 - 19:00)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Akihabara+Gachapon+Kaikan" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/super potato akibahara + gacha gacha shop akibahara+ lashinbang akibahara .jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Lashinbang (指南針)</div>
+                <div class="item-tips">二手動漫周邊，價格透明。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Lashinbang+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Mandarake + Mulan -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/mandareke complex + mulan akiba chuo-dori hobby store.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Mandarake Complex</div>
+                <div class="item-tips">黑色大樓，8層樓全是二手動漫寶藏。</div>
+                <div class="item-hours">🕒 12:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Mandarake+Complex+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/mandareke complex + mulan akiba chuo-dori hobby store.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Mulan Akiba</div>
+                <div class="item-tips">中央通上的二手店，營業時間較長。</div>
+                <div class="item-hours">🕒 10:00 - 22:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Mulan+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/namco akihabara.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Namco Akihabara</div>
+                <div class="item-tips">大型遊戲機中心，夾公仔機很多。</div>
+                <div class="item-hours">🕒 10:00 - 23:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Namco+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/thanko akibahara.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Thanko Akihabara</div>
+                <div class="item-tips">專賣創意家電和奇葩好物，非常有趣。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Thanko+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Renoir + Unatoto -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/coffee room ginza renoir + unatoto akibahara.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Ginza Renoir</div>
+                <div class="item-tips">懷舊喫茶店，座位寬敞，適合休息。</div>
+                <div class="item-hours">🕒 07:30 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Ginza+Renoir+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/coffee room ginza renoir + unatoto akibahara.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Unatoto (宇奈とと)</div>
+                <div class="item-tips">平價鰻魚飯，性價比高。</div>
+                <div class="item-hours">🕒 11:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Unatoto+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/caffe veloce akihabara station square.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Caffe Veloce</div>
+                <div class="item-tips">平價連鎖咖啡店，逛累了可以歇腳。</div>
+                <div class="item-hours">🕒 07:00 - 23:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Caffe+Veloce+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Sub: Under the Tracks (Aki-Oka) -->
+        <div class="sub-category-header">高架橋下文創區 (Aki-Oka Artisan Area)</div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/2k540 aki-oka artisan.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">2k540 Aki-Oka Artisan</div>
+                <div class="item-tips">高架橋下的職人街，有很多手工藝品和文創店。</div>
+                <div class="item-hours">🕒 11:00 - 19:00 (Wed Closed)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=2k540+Aki-Oka+Artisan" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Seekbase + Mandarake CoCoo -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/seekbase aki-oka manufacture + handarake cocoo.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Seekbase</div>
+                <div class="item-tips">大人的基地，音響、相機、黑膠唱片。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Seekbase+Akihabara" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/seekbase aki-oka manufacture + handarake cocoo.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Mandarake CoCoo</div>
+                <div class="item-tips">專賣軟膠玩具 (Sofubi)，位於高架橋下。</div>
+                <div class="item-hours">🕒 12:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Mandarake+CoCoo" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Tokyo Noble + Peach Brand -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tokyo noble 2k50 store + peach brand.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Tokyo Noble</div>
+                <div class="item-tips">高級雨傘專賣店 (2k540內)。</div>
+                <div class="item-hours">🕒 11:00 - 19:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Tokyo+Noble+2k540" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tokyo noble 2k50 store + peach brand.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Peach Brand</div>
+                <div class="item-tips">帆布包/雜貨 (2k540內)。</div>
+                <div class="item-hours">🕒 11:00 - 19:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=2k540+Aki-Oka+Artisan" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Sub: General -->
+        <div class="sub-category-header">其他 / 地圖 (General / Map)</div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/akihabara map.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Akihabara Map</div>
+                <div class="item-tips">秋葉原區域地圖參考。</div>
+                <div class="item-link-container"><a href="https://goo.gl/maps/Akihabara" target="_blank" class="item-link">🗺️ Google Maps</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/akihabara.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Akihabara General</div>
+                <div class="item-tips">秋葉原街景。</div>
+                <div class="item-link-container"><a href="https://goo.gl/maps/Akihabara" target="_blank" class="item-link">🗺️ Google Maps</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+    </div>
+
+    <!-- Yanaka & Ueno -->
+    <div class="category-section">
+        <div class="category-header">🐱 谷中銀座 & 上野 (Yanaka & Ueno)</div>
+        
+        <!-- Sub: Yanaka Ginza -->
+        <div class="sub-category-header">谷中銀座商店街 (Yanaka Ginza Shopping Street)</div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Himitsudo.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Himitsudo (ひみつ堂)</div>
+                <div class="item-tips">超人氣天然冰刨冰，位於谷中銀座附近，需預約。</div>
+                <div class="item-hours">🕒 10:00 - 18:00 (Mon Closed)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Himitsudo+Yanaka" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Niku no suzuki.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Niku no Suzuki</div>
+                <div class="item-tips">谷中銀座名物炸肉餅 (Menchi Katsu)，邊走邊吃。</div>
+                <div class="item-hours">🕒 10:30 - 18:00 (Mon Closed)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Niku+no+Suzuki+Yanaka" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Neco Republic tokyo yanaka.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Neco Republic</div>
+                <div class="item-tips">保護貓 Cafe，可以和貓咪互動，支持領養。</div>
+                <div class="item-hours">🕒 11:00 - 20:00 (Wknd 10:00~)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Neco+Republic+Yanaka" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/HACHINOKI.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Hachinoki</div>
+                <div class="item-tips">傳統日式定食/甜點，環境舒適。</div>
+                <div class="item-hours">🕒 11:30 - 19:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Hachinoki+Yanaka" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Kanmidokoro Kamakura.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Kanmidokoro Kamakura</div>
+                <div class="item-tips">蕨餅飲料專賣店，口感獨特，打卡必備。</div>
+                <div class="item-hours">🕒 10:00 - 17:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Kanmidokoro+Kamakura+Yanaka" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Sub: Ueno & Others -->
+        <div class="sub-category-header">上野 & 其他 (Ueno & Others)</div>
+
+        <!-- Split: Yoshiike + Sugi Drug -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Yoshike + SUGU Drugs.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Yoshiike (吉池)</div>
+                <div class="item-tips">上野老字號海鮮超市，也有餐廳。</div>
+                <div class="item-hours">🕒 09:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Yoshiike+Ueno" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Yoshike + SUGU Drugs.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Sugi Drug</div>
+                <div class="item-tips">大型藥妝店，買日用品方便。</div>
+                <div class="item-hours">🕒 09:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Sugi+Drug+Ueno" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/pelican cafe.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Pelican Cafe</div>
+                <div class="item-tips">淺草/藏前老舖麵包店 Cafe，炭烤吐司超有名。</div>
+                <div class="item-hours">🕒 09:00 - 17:00 (Sun Closed)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Pelican+Cafe+Tokyo" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+    </div>
+
+    <!-- Tokyo Station -->
+    <div class="category-section">
+        <div class="category-header">🛍️ 東京站 (Tokyo Station)</div>
+        
+        <!-- Sub: Character Street -->
+        <div class="sub-category-header">東京動漫人物街 & 拉麵街 (Character Street & Ramen Street)</div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/First Avenue tokyo station.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">First Avenue Tokyo Station</div>
+                <div class="item-tips">東京站一番街，B1F 集合了動漫街和拉麵街。</div>
+                <div class="item-hours">🕒 10:00 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=First+Avenue+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Tomica + Kirby + Shinchan -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tomica tokyo shop + kirby cafe petit tokyo station shop + crayon shichan official shop.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Tomica Shop</div>
+                <div class="item-tips">Tomica 小車專賣店。</div>
+                <div class="item-hours">🕒 10:00 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Tomica+Shop+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tomica tokyo shop + kirby cafe petit tokyo station shop + crayon shichan official shop.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Kirby Cafe Petit</div>
+                <div class="item-tips">星之卡比甜點外帶店。</div>
+                <div class="item-hours">🕒 10:00 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Kirby+Cafe+Petit+Tokyo" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tomica tokyo shop + kirby cafe petit tokyo station shop + crayon shichan official shop.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Crayon Shinchan Shop</div>
+                <div class="item-tips">蠟筆小新官方商店。</div>
+                <div class="item-hours">🕒 10:00 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Crayon+Shinchan+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Jump Shop + TV Asahi -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/jump shop tokuo station store + tv asahi tokyo station shop.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Jump Shop</div>
+                <div class="item-tips">少年 Jump 周邊 (One Piece, 排球少年等)。</div>
+                <div class="item-hours">🕒 10:00 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Jump+Shop+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/jump shop tokuo station store + tv asahi tokyo station shop.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">TV Asahi Shop</div>
+                <div class="item-tips">朝日電視台周邊 (哆啦A夢, 蠟筆小新)。</div>
+                <div class="item-hours">🕒 10:00 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=TV+Asahi+Shop+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/gbl tokyo station store.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">GBL (Donguri Republic)</div>
+                <div class="item-tips">吉卜力工作室的大人風美式休閒服飾品牌。</div>
+                <div class="item-hours">🕒 10:00 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=GBL+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/mofusand mofumofu store.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Mofusand Store</div>
+                <div class="item-tips">網紅貓咪鯊魚 (Mofusand) 專賣店，超可愛。</div>
+                <div class="item-hours">🕒 10:00 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Mofusand+Store+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Soranoiro + Ikaruga -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/soranoiro nippon + tokyo station ikaruga.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Soranoiro Nippon</div>
+                <div class="item-tips">有名的素食拉麵，也有普通拉麵。</div>
+                <div class="item-hours">🕒 10:30 - 23:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Soranoiro+Nippon" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/soranoiro nippon + tokyo station ikaruga.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Ikaruga (斑鳩)</div>
+                <div class="item-tips">豚骨魚介系拉麵名店。</div>
+                <div class="item-hours">🕒 10:30 - 23:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Tokyo+Station+Ikaruga" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Sub: Souvenirs -->
+        <div class="sub-category-header">手信 & 甜點 (Souvenirs & Gransta)</div>
+
+        <!-- Split: Maple Mania + Audrey -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/The maple mania gransta 東京店 +Audrey Gransta 東京店.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">The Maple Mania</div>
+                <div class="item-tips">楓糖牛油餅乾，人氣手信。</div>
+                <div class="item-hours">🕒 08:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=The+Maple+Mania+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/The maple mania gransta 東京店 +Audrey Gransta 東京店.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Audrey</div>
+                <div class="item-tips">草莓花束餅乾，常需排隊。</div>
+                <div class="item-hours">🕒 08:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Audrey+Gransta+Tokyo" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: NY Perfect Cheese + Sugar Butter + Ivorish -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/New york perfect cheese 東京南通路店 + sugar states 大丸東京店 + ivorish gransta 東京店.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">NY Perfect Cheese</div>
+                <div class="item-tips">芝士奶油脆餅，超人氣排隊店。</div>
+                <div class="item-hours">🕒 08:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=New+York+Perfect+Cheese+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/New york perfect cheese 東京南通路店 + sugar states 大丸東京店 + ivorish gransta 東京店.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Sugar Butter Tree</div>
+                <div class="item-tips">砂糖奶油樹餅乾。</div>
+                <div class="item-hours">🕒 08:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Sugar+Butter+Tree+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/New york perfect cheese 東京南通路店 + sugar states 大丸東京店 + ivorish gransta 東京店.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Ivorish</div>
+                <div class="item-tips">法式吐司費南雪。</div>
+                <div class="item-hours">🕒 08:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Ivorish+Gransta+Tokyo" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Tulip Rose + Bunmeido -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tulip rose gransta 東京店+文明堂銀座店.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Tulip Rose</div>
+                <div class="item-tips">花朵造型餅乾，送禮首選。</div>
+                <div class="item-hours">🕒 08:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Tulip+Rose+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tulip rose gransta 東京店+文明堂銀座店.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Bunmeido (文明堂)</div>
+                <div class="item-tips">蜂蜜蛋糕老舖。</div>
+                <div class="item-hours">🕒 10:00 - 20:00 (Daimaru)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Bunmeido+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Shiseido + Tokyo Banana -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/shiseido parlour yaesu shop + tokuo banana's tokyo banana + tax-free counter.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Shiseido Parlour</div>
+                <div class="item-tips">資生堂甜點，包裝精美。</div>
+                <div class="item-hours">🕒 09:00 - 21:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Shiseido+Parlour+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/shiseido parlour yaesu shop + tokuo banana's tokyo banana + tax-free counter.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Tokyo Banana</div>
+                <div class="item-tips">東京香蕉，經典手信。</div>
+                <div class="item-hours">🕒 06:30 - 21:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Tokyo+Banana+Tokyo+Station" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+    </div>
+
+    <!-- Azabudai & Ginza -->
+    <div class="category-section">
+        <div class="category-header">🗼 麻布台 & 銀座 (Azabudai & Ginza)</div>
+        
+        <!-- Sub: Azabudai Hills -->
+        <div class="sub-category-header">麻布台之丘 (Azabudai Hills Complex)</div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Azabudai Hills.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Azabudai Hills</div>
+                <div class="item-tips">東京新地標，建築設計獨特，有很多新餐廳。</div>
+                <div class="item-hours">🕒 11:00 - 20:00 (Shops)</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Azabudai+Hills" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/teamlab vorderless.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">TeamLab Borderless</div>
+                <div class="item-tips">沉浸式數碼藝術館，位於麻布台 Hills 地下，必須預約。</div>
+                <div class="item-hours">🕒 10:00 - 21:00</div>
+                <div class="item-link-container"><a href="https://www.teamlab.art/e/borderless-azabudai/" target="_blank" class="item-link">🔗 Official Site</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/hills house sky lobby.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Sky Lobby (33F)</div>
+                <div class="item-tips">位於麻布台 Hills 33樓的觀景台，可近距離看東京鐵塔。</div>
+                <div class="item-hours">🕒 10:45 - 21:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Azabudai+Hills+Sky+Lobby" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Shodai + % Arabica -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/shodai bio nature + %arabica.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Shodai Bio Nature</div>
+                <div class="item-tips">有機甜點，馬卡龍色巧克力。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Shodai+Bio+Nature+Azabudai" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/shodai bio nature + %arabica.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">% Arabica</div>
+                <div class="item-tips">網紅咖啡店，設計簡約。</div>
+                <div class="item-hours">🕒 08:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=%25+Arabica+Azabudai+Hills" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Suzukake + Market -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Suzukake + Azabudai Hills market.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Suzukake (鈴懸)</div>
+                <div class="item-tips">福岡老舖和菓子，鈴鐺造型最有名。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Suzukake+Azabudai+Hills" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Suzukake + Azabudai Hills market.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Azabudai Hills Market</div>
+                <div class="item-tips">集合了許多名店的美食市集。</div>
+                <div class="item-hours">🕒 10:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Azabudai+Hills+Market" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Gin no Mori + Criollo -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/patisserie gin no mori + griollo.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Patisserie Gin no Mori</div>
+                <div class="item-tips">像寶石盒一樣的餅乾罐。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Gin+no+Mori+Azabudai" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/patisserie gin no mori + griollo.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Criollo</div>
+                <div class="item-tips">著名甜點店，幻之芝士蛋糕。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Criollo+Azabudai" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/yakiigakiya oyster & wine.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Yakiigakiya</div>
+                <div class="item-tips">烤蠔/酒類專門店。</div>
+                <div class="item-hours">🕒 11:00 - 23:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Yakiigakiya" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Teapond + Shogun Burger -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Teapond + shogun burger.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Teapond</div>
+                <div class="item-tips">紅茶專賣店，包裝精緻。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Teapond+Azabudai" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Teapond + shogun burger.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Shogun Burger</div>
+                <div class="item-tips">和牛漢堡，肉汁豐富。</div>
+                <div class="item-hours">🕒 11:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Shogun+Burger+Azabudai" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Sub: Nearby & Ginza -->
+        <div class="sub-category-header">周邊 & 銀座 (Nearby & Ginza)</div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tokyo tower.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Tokyo Tower</div>
+                <div class="item-tips">東京經典地標，紅白鐵塔，距離麻布台 Hills 步行可達。</div>
+                <div class="item-hours">🕒 09:00 - 22:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Tokyo+Tower" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/mark' style.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Mark's Style (Ginza)</div>
+                <div class="item-tips">質感文具雜貨店，位於銀座 Six。</div>
+                <div class="item-hours">🕒 10:30 - 20:30</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Mark's+Style+Tokyo" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+    </div>
+
+    <!-- Shinjuku, Nakano, Shibuya -->
+    <div class="category-section">
+        <div class="category-header">🏙️ 新宿 & 中野 & 澀谷</div>
+        
+        <!-- Sub: Kabukicho Tower -->
+        <div class="sub-category-header">新宿歌舞伎町塔 (Tokyu Kabukicho Tower)</div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/tokyu kabukichio tower.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Tokyu Kabukicho Tower</div>
+                <div class="item-tips">新宿歌舞伎町新地標，集合娛樂、飯店、餐廳。</div>
+                <div class="item-hours">🕒 24 Hours</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Tokyu+Kabukicho+Tower" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/namco tokyo 3F.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Namco Tokyo (3F)</div>
+                <div class="item-tips">位於 Kabukicho Tower 3F，有酒吧的 Namco，大人風。</div>
+                <div class="item-hours">🕒 11:00 - 01:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Namco+Tokyo+Kabukicho" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/The tokyo matrix.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">The Tokyo Matrix</div>
+                <div class="item-tips">位於 Kabukicho Tower 4F，大型解謎遊戲體驗。</div>
+                <div class="item-hours">🕒 10:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=The+Tokyo+Matrix" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Sub: Nakano Broadway -->
+        <div class="sub-category-header">中野百老匯 (Nakano Broadway)</div>
+
+        <!-- Split: Nakano Broadway + Mandarake -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/naano broadway + mandarake nakano.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Nakano Broadway</div>
+                <div class="item-tips">懷舊玩具/手錶/動漫聖地。</div>
+                <div class="item-hours">🕒 11:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Nakano+Broadway" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/naano broadway + mandarake nakano.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Mandarake Nakano</div>
+                <div class="item-tips">Mandarake 本店，收藏品極多。</div>
+                <div class="item-hours">🕒 12:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Mandarake+Nakano" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/nakano map.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Nakano Map</div>
+                <div class="item-tips">中野區域地圖。</div>
+                <div class="item-link-container"><a href="https://goo.gl/maps/Nakano" target="_blank" class="item-link">🗺️ Google Maps</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/nakano.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Nakano General</div>
+                <div class="item-tips">中野商店街景。</div>
+                <div class="item-link-container"><a href="https://goo.gl/maps/Nakano" target="_blank" class="item-link">🗺️ Google Maps</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Sub: Shibuya -->
+        <div class="sub-category-header">澀谷 (Shibuya)</div>
+
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/shibuya sky.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Shibuya Sky</div>
+                <div class="item-tips">澀谷最高觀景台，景色絕佳，必須提前預約。</div>
+                <div class="item-hours">🕒 10:00 - 22:30</div>
+                <div class="item-link-container"><a href="https://www.shibuya-scramble-square.com/sky/" target="_blank" class="item-link">🔗 Official Site</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+
+        <!-- Split: Kitaro + Tamashii + Nintendo -->
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/鬼太郎茶屋 + 東京魂商店+nintendo TOKYO.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Nintendo Tokyo</div>
+                <div class="item-tips">任天堂官方商店 (Shibuya Parco 6F)。</div>
+                <div class="item-hours">🕒 10:00 - 21:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Nintendo+Tokyo+Shibuya" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/鬼太郎茶屋 + 東京魂商店+nintendo TOKYO.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Pokemon Center Shibuya</div>
+                <div class="item-tips">寶可夢中心 (Shibuya Parco 6F)。</div>
+                <div class="item-hours">🕒 10:00 - 21:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Pokemon+Center+Shibuya" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/kumachan onsen.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Kumachan Onsen</div>
+                <div class="item-tips">北海道小熊火鍋，造型超可愛，需預約。</div>
+                <div class="item-hours">🕒 11:00 - 22:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Kumachan+Onsen+Shibuya" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+    </div>
+
+    <!-- Others -->
+    <div class="category-section">
+        <div class="category-header">✨ 其他 (Others)</div>
+        
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/fujiko f fujio museum.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Fujiko F Fujio Museum</div>
+                <div class="item-tips">多啦A夢博物館，位於川崎市，必須提前購票。</div>
+                <div class="item-hours">🕒 10:00 - 18:00 (Tue Closed)</div>
+                <div class="item-link-container"><a href="https://fujiko-museum.com/" target="_blank" class="item-link">🔗 Official Site</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/Diseley land.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">Disneyland</div>
+                <div class="item-tips">東京迪士尼樂園，夢幻國度。</div>
+                <div class="item-hours">🕒 09:00 - 21:00</div>
+                <div class="item-link-container"><a href="https://www.tokyodisneyresort.jp/" target="_blank" class="item-link">🔗 Official Site</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+        <div class="item-row">
+            <div class="item-left" onclick="openModal(this)"><img src="additional places want to go/jp travaling card.jpeg" class="item-img"></div>
+            <div class="item-middle">
+                <div class="item-title">JP Traveling Card</div>
+                <div class="item-tips">交通卡 (Suica/Pasmo) 或旅遊周遊券。</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=Japan+Travel+Card" target="_blank" class="item-link">🔍 Google Search</a></div>
+            </div>
+            <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="summary-box">
+    <div class="summary-text">已選擇: <span id="count">0</span> / <span id="total-count">0</span></div>
+</div>
+
+<div id="myModal" class="modal">
+  <span class="close" onclick="closeModal()">&times;</span>
+  <img class="modal-content" id="img01">
+</div>
+
+<script>
+    // Update count
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const countSpan = document.getElementById('count');
+    const totalCountSpan = document.getElementById('total-count');
+    
+    totalCountSpan.textContent = checkboxes.length;
+    
+    function updateCount() {
+        const checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+        countSpan.textContent = checkedCount;
+    }
+
+    checkboxes.forEach(box => {
+        box.addEventListener('change', function() {
+            updateCount();
+            // Update status text
+            const statusText = this.parentElement.nextElementSibling;
+            if(this.checked) {
+                statusText.textContent = "已選擇";
+                statusText.style.color = "#2196F3";
+                statusText.style.fontWeight = "bold";
+            } else {
+                statusText.textContent = "未選擇";
+                statusText.style.color = "#999";
+                statusText.style.fontWeight = "normal";
+            }
+        });
+    });
+    
+    // Initialize count
+    updateCount();
+
+    // Modal
+    function openModal(div) {
+        var modal = document.getElementById("myModal");
+        var modalImg = document.getElementById("img01");
+        var img = div.querySelector('img');
+        modal.style.display = "block";
+        modalImg.src = img.src;
+    }
+
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>

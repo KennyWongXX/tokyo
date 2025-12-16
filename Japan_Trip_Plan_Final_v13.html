@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>日本東京大阪 11日10夜行程 (v13 - Wishlist Full Integration)</title>
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    body { font-family: "Microsoft JhengHei", "Microsoft YaHei", sans-serif; line-height: 1.6; color: #333; max-width: 1100px; margin: 0 auto; padding: 20px; background-color: #f4f4f9; }
+    h1 { color: #2E74B5; border-bottom: 3px solid #2E74B5; padding-bottom: 10px; text-align: center; }
+    h2 { color: #fff; background-color: #2E74B5; padding: 10px 15px; border-radius: 5px; margin-top: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    h3 { color: #1F4D78; border-left: 5px solid #FFC000; padding-left: 15px; margin-top: 25px; background-color: #fff; padding-top: 5px; padding-bottom: 5px; }
+    
+    .highlight { color: #C00000; font-weight: bold; }
+    .note { background-color: #FFF2CC; padding: 15px; border: 1px solid #D6B656; border-radius: 5px; margin: 10px 0; }
+    
+    /* Wishlist Checklist Styles */
+    .wishlist-container { background-color: #fff; padding: 20px; border-radius: 8px; border: 2px solid #FFC000; margin-bottom: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .wishlist-title { font-size: 1.2em; font-weight: bold; color: #d35400; margin-bottom: 10px; display: block; }
+    .wishlist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+    .wishlist-item { display: flex; align-items: center; background-color: #fff8e1; padding: 8px; border-radius: 4px; border: 1px solid #eee; }
+    .wishlist-item input { margin-right: 10px; transform: scale(1.2); cursor: pointer; }
+    .wishlist-item label { cursor: pointer; font-size: 0.95em; width: 100%; }
+    .wishlist-item:hover { background-color: #ffe0b2; }
+    
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; background-color: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden; }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
+    th { background-color: #f2f2f2; color: #333; font-weight: bold; }
+    tr:nth-child(even) { background-color: #fcfcfc; }
+    
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    
+    .map-link { font-size: 0.9em; color: #fff; background-color: #4CAF50; padding: 2px 6px; border-radius: 3px; margin-left: 5px; text-decoration: none; }
+    .info-link { font-size: 0.9em; color: #fff; background-color: #2196F3; padding: 2px 6px; border-radius: 3px; margin-left: 5px; text-decoration: none; }
+    .map-link:hover, .info-link:hover { opacity: 0.8; text-decoration: none; }
+    
+    .hotel-row { background-color: #e8f4f8; font-style: italic; color: #555; border-left: 5px solid #2196F3; }
+    .food-row { background-color: #fff3e0; border-left: 5px solid #ff9800; }
+    
+    .food-tag { background-color: #ff6b6b; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-right: 5px; }
+    
+    /* Map Styles */
+    .map-container { height: 400px; width: 100%; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 5px; }
+    .map-section { background-color: #fff; padding: 20px; border-radius: 10px; margin-top: 20px; border: 1px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+    .map-title { font-weight: bold; margin-bottom: 10px; display: block; color: #2E74B5; }
+
+    /* Food Popup Styles */
+    .food-item {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        color: #d35400;
+        font-weight: bold;
+        border-bottom: 1px dashed #d35400;
+        margin-right:  5px;
+        text-decoration: none;
+    }
+    .food-item:hover { text-decoration: none; color: #e67e22; }
+    .food-item .food-popup {
+        visibility: hidden;
+        width: 220px;
+        background-color: #fff;
+        color: #333;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 100;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -110px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        border: 1px solid #ddd;
+        font-size: 0.85em;
+        font-weight: normal;
+    }
+    .food-item .food-popup::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #fff transparent transparent transparent;
+    }
+    .food-item:hover .food-popup { visibility: visible; opacity: 1; }
+    .food-category { font-weight: bold; color: #e67e22; margin-right: 2px; font-size: 0.9em; }
+</style>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+
+<h1>🇯🇵 日本東京大阪 11日10夜 行程 (v13)</h1>
+
+<div class="wishlist-container">
+    <span class="wishlist-title">✅ Wishlist 整合清單 (Interactive Checklist)</span>
+    <p style="font-size:0.9em; color:#666; margin-top:0;">以下是從圖片中識別出的所有地點。預設全部勾選，你可以取消勾選來標記不想去的地方。</p>
+    
+    <h4 style="margin: 10px 0 5px 0; color: #2E74B5;">Day 2: 埼玉 & 谷中 & 秋葉原</h4>
+    <div class="wishlist-grid">
+        <div class="wishlist-item"><label><input type="checkbox" checked> Everyday 行田店 (埼玉)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> 谷中銀座 (Yanaka Ginza)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Himitsudo (ひみつ堂)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Niku no Suzuki (肉のすずき)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Kanmidokoro Kamakura</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Neco Republic</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Hachinoki</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Yoshiike (吉池)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Sugi Drug (上野)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Pelican Cafe</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Akihabara Radio Kaikan</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> AmiAmi Akihabara</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Kaiyodo Hobby Lobby</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Volks Doll Point</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tamashii Nations Store</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Mandarake Complex</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Super Potato</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Mulan Akiba</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Lashinbang</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Gacha Gacha Shop</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Thanko</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> 2k540 Aki-Oka Artisan</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tokyo Noble</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Peach Brand</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Seekbase</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Chabara Aki-Oka Marche</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Unatoto (宇奈とと)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Ginza Renoir</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Caffe Veloce</label></div>
+    </div>
+
+    <h4 style="margin: 15px 0 5px 0; color: #2E74B5;">Day 3: 澀谷 & 原宿</h4>
+    <div class="wishlist-grid">
+        <div class="wishlist-item"><label><input type="checkbox" checked> Fujiko F Fujio Museum (Option)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Shibuya Parco</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Nintendo Tokyo</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Pokemon Center Shibuya</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Jump Shop Shibuya</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Shibuya Sky</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Kumachan Onsen</label></div>
+    </div>
+
+    <h4 style="margin: 15px 0 5px 0; color: #2E74B5;">Day 4: 東京站 & 銀座 & 麻布台 & 新宿</h4>
+    <div class="wishlist-grid">
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tokyo Station (First Avenue)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tokyo Character Street</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tomica Shop</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Kirby Cafe Petit</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Crayon Shinchan Shop</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> GBL (Donguri Republic)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Jump Shop Tokyo Stn</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> TV Asahi Shop</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Mofusand Mofumofu Store</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> The Maple Mania</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Audrey</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tulip Rose</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Ivorish</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Sugar Butter Sand Tree</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> NY Perfect Cheese</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Shiseido Parlour</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tokyo Banana</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Soranoiro Nippon (Ramen)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Ikaruga (Ramen)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Bunmeido Ginza</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Mark's Style Tokyo</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Azabudai Hills</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> TeamLab Borderless</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Sky Lobby (33F)</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> % Arabica</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Shodai Bio Nature</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Teapond</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Suzukake</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Patisserie Gin no Mori</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Criollo</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Yakiigakiya</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Nakano Broadway</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Mandarake Nakano</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tokyu Kabukicho Tower</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Namco Tokyo</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> The Tokyo Matrix</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Shogun Burger</label></div>
+    </div>
+
+    <h4 style="margin: 15px 0 5px 0; color: #2E74B5;">Others</h4>
+    <div class="wishlist-grid">
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tokyo Disneyland</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Tokyo DisneySea</label></div>
+        <div class="wishlist-item"><label><input type="checkbox" checked> Kitaro Chaya (Chofu) [遠]</label></div>
+    </div>
+</div>
+
+<!-- Map Section -->
+<div class="map-section">
+    <h2>🗺️ 行程地圖</h2>
+    <span class="map-title">📍 東京區域</span>
+    <div id="map-tokyo" class="map-container"></div>
+    <span class="map-title">📍 大阪區域</span>
+    <div id="map-osaka" class="map-container"></div>
+</div>
+
+<h2>🗓️ 詳細行程</h2>
+
+<h3>Day 1: 12月18日 (四) - 抵達東京</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>19:00</td>
+        <td>抵達 <strong>成田機場 (NRT)</strong> <a href="javascript:void(0)" onclick="focusMap(35.7719, 140.3929, 'tokyo')" class="map-link">📍</a></td>
+        <td>入境約需 1 小時</td>
+    </tr>
+    <tr>
+        <td>20:30</td>
+        <td><strong>前往池袋</strong> (Skyliner / N'EX)</td>
+        <td>約 60-90 分鐘</td>
+    </tr>
+    <tr>
+        <td>22:30</td>
+        <td><strong>Check-in 池袋酒店</strong> & 深夜夾公仔<br>
+        <ul>
+            <li><strong>GIGO 池袋總店</strong> (至 23:30) <a href="javascript:void(0)" onclick="focusMap(35.7289, 139.7124, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Round 1 池袋</strong> (24小時) <a href="javascript:void(0)" onclick="focusMap(35.7295, 139.7130, 'tokyo')" class="info-link">📍</a></li>
+        </ul>
+        </td>
+        <td>放低行李即刻玩！</td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2"><strong>Super Hotel Premier Ikebukuro</strong></td></tr>
+</table>
+
+<h3>Day 2: 12月19日 (五) - 埼玉夾公仔 & 谷中銀座 & 秋葉原 (深度遊)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>09:00</td>
+        <td>前往 <strong>埼玉縣行田市</strong> (Everyday 行田店)</td>
+        <td>池袋 → 吹上站 → 的士</td>
+    </tr>
+    <tr>
+        <td>10:30</td>
+        <td>🛸 <strong>Everyday 行田店 (世界一夾公仔)</strong> <a href="javascript:void(0)" onclick="focusMap(36.1158, 139.4867, 'tokyo')" class="map-link">📍</a></td>
+        <td>Wishlist 必去！</td>
+    </tr>
+    <tr>
+        <td>14:00</td>
+        <td><strong>谷中銀座 (Yanaka Ginza)</strong> <a href="javascript:void(0)" onclick="focusMap(35.7273, 139.7669, 'tokyo')" class="map-link">📍</a><br>
+        <ul>
+            <li><strong>Himitsudo (ひみつ堂)</strong>: 刨冰 <a href="javascript:void(0)" onclick="focusMap(35.7278, 139.7665, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Kanmidokoro Kamakura</strong>: 蕨餅 <a href="javascript:void(0)" onclick="focusMap(35.7273, 139.7669, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Niku no Suzuki</strong>: 炸肉餅 <a href="javascript:void(0)" onclick="focusMap(35.7275, 139.7660, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Neco Republic</strong>: 貓 Cafe <a href="javascript:void(0)" onclick="focusMap(35.7280, 139.7670, 'tokyo')" class="info-link">📍</a></li>
+        </ul>
+        </td>
+        <td>下町風情。</td>
+    </tr>
+    <tr>
+        <td>16:00</td>
+        <td><strong>上野 (Ueno)</strong><br>
+        <ul>
+            <li><strong>Yoshiike (吉池)</strong>: 生鮮/手信 <a href="javascript:void(0)" onclick="focusMap(35.7076, 139.7745, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Sugi Drug</strong>: 藥妝 <a href="javascript:void(0)" onclick="focusMap(35.7080, 139.7740, 'tokyo')" class="info-link">📍</a></li>
+        </ul>
+        </td>
+        <td>順路經過。</td>
+    </tr>
+    <tr>
+        <td>17:00</td>
+        <td>⚡ <strong>秋葉原 (Akihabara) - 深度遊</strong> <a href="javascript:void(0)" onclick="focusMap(35.6984, 139.7712, 'tokyo')" class="map-link">📍</a><br>
+        <strong>Wishlist Targets:</strong>
+        <ul>
+            <li><strong>Radio Kaikan (無線電會館)</strong>: <a href="javascript:void(0)" onclick="focusMap(35.6980, 139.7720, 'tokyo')" class="info-link">📍</a><br>
+                <small>AmiAmi, Kaiyodo, Volks Doll Point</small>
+            </li>
+            <li><strong>Tamashii Nations Store Tokyo</strong> <a href="javascript:void(0)" onclick="focusMap(35.6984, 139.7712, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Mandarake Complex</strong> & <strong>Mulan</strong> <a href="javascript:void(0)" onclick="focusMap(35.7005, 139.7705, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Super Potato</strong> (懷舊 Game) <a href="javascript:void(0)" onclick="focusMap(35.6995, 139.7700, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Chabara Aki-Oka Marche</strong> (日本食品) <a href="javascript:void(0)" onclick="focusMap(35.6990, 139.7730, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>2k540 Aki-Oka Artisan</strong> (高架橋下) <a href="javascript:void(0)" onclick="focusMap(35.7040, 139.7740, 'tokyo')" class="info-link">📍</a><br>
+                <small>Tokyo Noble, Peach Brand, Seekbase</small>
+            </li>
+            <li><strong>Caffe Veloce</strong> (休息用) <a href="javascript:void(0)" onclick="focusMap(35.6985, 139.7745, 'tokyo')" class="info-link">📍</a></li>
+        </ul>
+        </td>
+        <td>
+            動漫迷聖地。
+        </td>
+    </tr>
+    <tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[晚]</span>
+            <a href="https://www.google.com/search?q=Unatoto+Akihabara" target="_blank" class="food-item">Unatoto (宇奈とと)<span class="food-popup">平價鰻魚飯 (Wishlist)。</span></a>, 
+            <a href="https://www.google.com/search?q=Ginza+Renoir+Akihabara" target="_blank" class="food-item">Ginza Renoir<span class="food-popup">懷舊喫茶店 (Wishlist)。</span></a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 3: 12月20日 (六) - 藤子F不二雄 & 澀谷 (Wishlist Day)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>09:00</td>
+        <td><strong>[Option] 藤子·F·不二雄博物館 (多啦A夢)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6098, 139.5737, 'tokyo')" class="map-link">📍</a><br>
+        地點: 川崎市 (需預約)<br>
+        <em>*如不去，可改去 <strong>鬼太郎茶屋 (調布)</strong> 或直接去原宿。</em></td>
+        <td>
+            <span class="highlight">Wishlist!</span><br>
+            需提早購票。
+        </td>
+    </tr>
+    <tr>
+        <td>13:30</td>
+        <td>前往 <strong>澀谷 (Shibuya)</strong></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>14:00</td>
+        <td>🎮 <strong>Shibuya Parco</strong> <a href="javascript:void(0)" onclick="focusMap(35.6620, 139.6986, 'tokyo')" class="map-link">📍</a><br>
+        <ul>
+            <li><strong>Nintendo Tokyo</strong> (6F) <span class="highlight">(Wishlist!)</span></li>
+            <li><strong>Pokemon Center Shibuya</strong></li>
+            <li><strong>Jump Shop</strong></li>
+        </ul>
+        </td>
+        <td>
+            動漫迷必去 6 樓！
+        </td>
+    </tr>
+    <tr>
+        <td>16:30</td>
+        <td>🌇 <strong>Shibuya Sky</strong> (需預約) <a href="javascript:void(0)" onclick="focusMap(35.6580, 139.7016, 'tokyo')" class="map-link">📍</a><br>
+        澀谷最高觀景台。</td>
+        <td>
+            <span class="highlight">Wishlist!</span>
+        </td>
+    </tr>
+    <tr>
+        <td>19:00</td>
+        <td>🍲 <strong>Kumachan Onsen (小熊溫泉火鍋)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6605, 139.7010, 'tokyo')" class="map-link">📍</a></td>
+        <td>
+            <span class="highlight">Wishlist!</span>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 4: 12月21日 (日) - 東京站 & 中野 & 新宿 (爆買日)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>09:00</td>
+        <td>🛍️ <strong>東京站手信 (Tokyo Station)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="map-link">📍</a><br>
+        <strong>Wishlist Targets:</strong>
+        <ul>
+            <li><strong>Gransta:</strong> Maple Mania, Audrey, Tulip Rose, Ivorish</li>
+            <li><strong>大丸:</strong> Sugar Butter Sand Tree, NY Perfect Cheese</li>
+            <li><strong>一番街:</strong> Tokyo Banana, Shiseido Parlour, GBL (Donguri), Tomica, Kirby Cafe Petit</li>
+        </ul>
+        </td>
+        <td>
+            <span class="highlight">買完即刻鎖 Locker！</span>
+        </td>
+    </tr>
+    <tr>
+        <td>12:00</td>
+        <td><strong>銀座 (Ginza)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6712, 139.7665, 'tokyo')" class="map-link">📍</a><br>
+        <ul>
+            <li><strong>Bunmeido (文明堂)</strong></li>
+            <li><strong>Mark's Style Tokyo</strong> (Ginza Six)</li>
+        </ul>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>14:00</td>
+        <td><strong>麻布台之丘 (Azabudai Hills)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6604, 139.7292, 'tokyo')" class="map-link">📍</a><br>
+        <ul>
+            <li><strong>TeamLab Borderless</strong> (需預約)</li>
+            <li><strong>Sky Lobby</strong> (33F)</li>
+            <li><strong>Shops:</strong> % Arabica, Teapond, Suzukake, Gin no Mori, Criollo</li>
+        </ul>
+        </td>
+        <td>新地標。</td>
+    </tr>
+    <tr>
+        <td>17:00</td>
+        <td>📚 <strong>中野百老匯 (Nakano Broadway)</strong> <a href="javascript:void(0)" onclick="focusMap(35.7058, 139.6658, 'tokyo')" class="map-link">📍</a><br>
+        <strong>Wishlist:</strong> Mandarake Nakano (本店), 懷舊玩具。</td>
+        <td>
+            <span class="highlight">Wishlist 新增！</span><br>
+            比秋葉原更 Hardcore 的收藏地。
+        </td>
+    </tr>
+    <tr>
+        <td>19:30</td>
+        <td><strong>新宿歌舞伎町 (Kabukicho)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6954, 139.7005, 'tokyo')" class="map-link">📍</a><br>
+        <strong>Tokyu Kabukicho Tower:</strong>
+        <ul>
+            <li><strong>Namco Tokyo (3F)</strong></li>
+            <li><strong>The Tokyo Matrix (4F)</strong></li>
+        </ul>
+        </td>
+        <td></td>
+    </tr>
+    <tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[晚]</span>
+            <a href="https://www.google.com/search?q=Shogun+Burger+Shinjuku" target="_blank" class="food-item">Shogun Burger<span class="food-popup">和牛漢堡 (Wishlist!)。</span></a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 5: 12月22日 (一) - 東京迪士尼樂園 (Land)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>09:00</td>
+        <td>🏰 <strong>Disneyland 全日遊</strong> <a href="javascript:void(0)" onclick="focusMap(35.6329, 139.8804, 'tokyo')" class="map-link">📍</a></td>
+        <td>Wishlist!</td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2"><strong>Tokyo Disney Celebration Hotel</strong></td></tr>
+</table>
+
+<h3>Day 6: 12月23日 (二) - 東京迪士尼海洋 (Sea) & 夜行巴士</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>09:00</td>
+        <td>🌊 <strong>DisneySea 全日遊</strong> <a href="javascript:void(0)" onclick="focusMap(35.6267, 139.8850, 'tokyo')" class="map-link">📍</a></td>
+        <td>Wishlist!</td>
+    </tr>
+    <tr>
+        <td>22:00</td>
+        <td>🚌 <strong>乘搭夜行巴士 (Willer Express)</strong></td>
+        <td>前往大阪。</td>
+    </tr>
+</table>
+
+<h3>Day 7: 12月24日 (三) - 大阪難波 (平安夜)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>10:00</td>
+        <td><strong>黑門市場</strong> <a href="javascript:void(0)" onclick="focusMap(34.6653, 135.5070, 'osaka')"  class="map-link">📍</a></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>13:00</td>
+        <td><strong>難波 & 道頓堀 & 心齋橋</strong> <a href="javascript:void(0)" onclick="focusMap(34.6687, 135.5013, 'osaka')"  class="map-link">📍</a><br>
+        Glico 跑跑人, Round 1, Parco 心齋橋</td>
+        <td></td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2"><strong>Sotetsu Fresa Inn Osaka Namba</strong></td></tr>
+</table>
+
+<h3>Day 8: 12月25日 (四) - 大阪環球影城 (USJ)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>08:30</td>
+        <td>🌍 <strong>Universal Studios Japan</strong> <a href="javascript:void(0)" onclick="focusMap(34.6654, 135.4323, 'osaka')"  class="map-link">📍</a><br>
+        Super Nintendo World, Harry Potter</td>
+        <td>Wishlist!</td>
+    </tr>
+</table>
+
+<h3>Day 9: 12月26日 (五) - 日本橋 & 通天閣</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>11:00</td>
+        <td>🤖 <strong>日本橋 (Den Den Town)</strong> <a href="javascript:void(0)" onclick="focusMap(34.6595, 135.506, 'osaka')"  class="map-link">📍</a><br>
+        Super Kids Land, Animate</td>
+        <td>大阪秋葉原。</td>
+    </tr>
+    <tr>
+        <td>15:00</td>
+        <td><strong>新世界 & 通天閣</strong> <a href="javascript:void(0)" onclick="focusMap(34.6525, 135.5063, 'osaka')"  class="map-link">📍</a></td>
+        <td></td>
+    </tr>
+</table>
+
+<h3>Day 10: 12月27日 (六) - 萬博公園 / 奈良</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>10:00</td>
+        <td><strong>Expocity (萬博)</strong> <a href="javascript:void(0)" onclick="focusMap(34.8056, 135.5322, 'osaka')"  class="map-link">📍</a><br>
+        VS PARK, NIFREL</td>
+        <td></td>
+    </tr>
+</table>
+
+<h3>Day 11: 12月28日 (日) - 回程</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>10:00</td>
+        <td>前往 <strong>關西機場 (KIX)</strong> <a href="javascript:void(0)" onclick="focusMap(34.4320, 135.2304, 'osaka')"  class="map-link">📍</a></td>
+        <td></td>
+    </tr>
+</table>
+
+<script>
+    var mapTokyo = L.map('map-tokyo').setView([35.6895, 139.6917], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapTokyo);
+    var mapOsaka = L.map('map-osaka').setView([34.6937, 135.5023], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapOsaka);
+
+    function focusMap(lat, lng, region) {
+        if(region === 'tokyo') {
+            mapTokyo.setView([lat, lng], 15);
+            L.marker([lat, lng]).addTo(mapTokyo).openPopup();
+        } else {
+            mapOsaka.setView([lat, lng], 15);
+            L.marker([lat, lng]).addTo(mapOsaka).openPopup();
+        }
+    }
+    
+    // Add Markers (Simplified for brevity, but includes key new ones)
+    L.marker([35.7058, 139.6658]).addTo(mapTokyo).bindPopup("Nakano Broadway");
+    L.marker([35.6098, 139.5737]).addTo(mapTokyo).bindPopup("Fujiko F Fujio Museum");
+    L.marker([35.6990, 139.7730]).addTo(mapTokyo).bindPopup("Chabara Akihabara");
+    L.marker([35.6985, 139.7745]).addTo(mapTokyo).bindPopup("Caffe Veloce");
+    L.marker([35.6604, 139.7292]).addTo(mapTokyo).bindPopup("Azabudai Hills");
+</script>
+
+</body>
+</html>

@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>日本東京大阪 11日10夜行程 (v12 - 願望清單整合版)</title>
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<style>
+    body { font-family: "Microsoft JhengHei", "Microsoft YaHei", sans-serif; line-height: 1.6; color: #333; max-width: 1000px; margin: 0 auto; padding: 20px; }
+    h1 { color: #2E74B5; border-bottom: 3px solid #2E74B5; padding-bottom: 10px; }
+    h2 { color: #fff; background-color: #2E74B5; padding: 10px; border-radius: 5px; margin-top: 30px; }
+    h3 { color: #1F4D78; border-left: 5px solid #FFC000; padding-left: 10px; margin-top: 25px; }
+    .highlight { color: #C00000; font-weight: bold; }
+    .note { background-color: #FFF2CC; padding: 15px; border: 1px solid #D6B656; border-radius: 5px; margin: 10px 0; }
+    .tip { background-color: #E2F0D9; padding: 15px; border: 1px solid #70AD47; border-radius: 5px; margin: 10px 0; }
+    .hotel-box { background-color: #E6F3FF; padding: 15px; border: 1px solid #3399FF; border-radius: 5px; margin: 10px 0; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
+    th { background-color: #f2f2f2; color: #333; font-weight: bold; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    a { color: #0066cc; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .map-link { font-size: 0.9em; color: #fff; background-color: #4CAF50; padding: 3px 8px; border-radius: 3px; margin-left: 5px; }
+    .info-link { font-size: 0.9em; color: #fff; background-color: #2196F3; padding: 3px 8px; border-radius: 3px; margin-left: 5px; }
+    .hotel-row { background-color: #eef; font-style: italic; color: #555; }
+    
+    .food-tag { background-color: #ff6b6b; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-right: 5px; }
+    
+    /* Map Styles */
+    .map-container { height: 400px; width: 100%; margin-bottom: 20px; border: 2px solid #ddd; border-radius: 5px; }
+    .map-section { background-color: #f8f9fa; padding: 20px; border-radius: 10px; margin-top: 20px; border: 1px solid #ddd; }
+    .map-title { font-weight: bold; margin-bottom: 10px; display: block; color: #2E74B5; }
+
+    /* Food Popup Styles */
+    .food-item {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        color: #d35400;
+        font-weight: bold;
+        border-bottom: 1px dashed #d35400;
+        margin-right:  2px;
+        text-decoration: none;
+    }
+    .food-item:hover { text-decoration: none; color: #e67e22; }
+    .food-item .food-popup {
+        visibility: hidden;
+        width: 220px;
+        background-color: #fff;
+        color: #333;
+        text-align: center;
+        border-radius: 6px;
+        padding: 8px;
+        position: absolute;
+        z-index: 100;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -110px;
+        opacity: 0;
+        transition: opacity 0.3s;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        border: 1px solid #ddd;
+        font-size: 0.85em;
+        font-weight: normal;
+    }
+    .food-item .food-popup::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #fff transparent transparent transparent;
+    }
+    .food-item .food-popup img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        display: block;
+    }
+    .food-item:hover .food-popup {
+        visibility: visible;
+        opacity: 1;
+    }
+    .food-row { background-color: #fff8e1; }
+    .food-category { font-weight: bold; color: #e67e22; margin-right: 2px; font-size: 0.9em; }
+    .food-map-link { text-decoration: none; margin-left: 2px; margin-right: 10px; font-size: 1em; cursor: pointer; }
+</style>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+
+<h1>🇯🇵 日本東京大阪 11日10夜 行程 (v12 - 願望清單整合版)</h1>
+
+<div class="note">
+    <strong>v12 更新重點：</strong> 
+    已根據你的 Wishlist 圖片更新詳細店舖名單！
+    <ul>
+        <li><strong>Day 2 (秋葉原):</strong> 大量新增！Radio Kaikan, AmiAmi, Super Potato, 2k540, Seekbase, Unatoto 等。</li>
+        <li><strong>Day 4 (東京站):</strong> 新增 Sugar Butter Sand Tree, Ivorish, Tokyo Banana 等。</li>
+        <li><strong>Day 4 (麻布台):</strong> 新增 % Arabica, Teapond, Suzukake, Gin no Mori 等。</li>
+    </ul>
+</div>
+
+<!-- Map Section -->
+<div class="map-section">
+    <h2>🗺️ 行程地圖 (Interactive Map)</h2>
+    <p><em>*此地圖需在瀏覽器中觀看，可縮放及點擊標記查看地點。</em></p>
+    
+    <span class="map-title">📍 東京區域 (Day 1 - Day 6)</span>
+    <button onclick="locateUser('tokyo')" style="margin-bottom: 5px; padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;">📍 Where am I?</button>
+    <div id="map-tokyo" class="map-container"></div>
+    
+    <span class="map-title">📍 大阪區域 (Day 7 - Day 11)</span>
+    <button onclick="locateUser('osaka')" style="margin-bottom: 5px; padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer;">📍 Where am I?</button>
+    <div id="map-osaka" class="map-container"></div>
+</div>
+
+<h2>🏨 住宿建議</h2>
+<div class="hotel-box">
+    <h3>📍 東京住宿 (建議住 池袋 Ikebukuro)</h3>
+    <p><em>交通方便，多 Game Center，去埼玉/迪士尼都方便。</em></p>
+    <ul>
+        <li><strong>Super Hotel Premier Ikebukuro Natural Onsen</strong> (有溫泉浸，包早餐)</li>
+        <li><strong>the b ikebukuro</strong> (位置極好，近車站東口)</li>
+    </ul>
+</div>
+
+<h2>🗓️ 詳細行程</h2>
+
+<h3>Day 1: 12月18日 (四) - 抵達東京</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>19:00</td>
+        <td>抵達 <strong>成田機場 (NRT)</strong> <a href="javascript:void(0)" onclick="focusMap(35.7719, 140.3929, 'tokyo')" class="map-link">📍</a></td>
+        <td>入境約需 1 小時</td>
+    </tr>
+    <tr>
+        <td>20:30</td>
+        <td><strong>前往池袋</strong> (Skyliner / N'EX) <a href="https://www.youtube.com/results?search_query=Skyliner+購票+教學+成田機場" target="_blank" class="info-link">📺 購票教學 Video</a></td>
+        <td>約 60-90 分鐘</td>
+    </tr>
+    <tr>
+        <td>22:30</td>
+        <td><strong>Check-in 池袋酒店</strong> & 深夜夾公仔<br>
+        <ul>
+            <li><strong>GIGO 池袋總店</strong> (至 23:30) <a href="javascript:void(0)" onclick="focusMap(35.7289, 139.7124, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Round 1 池袋</strong> (24小時) <a href="javascript:void(0)" onclick="focusMap(35.7295, 139.7130, 'tokyo')" class="info-link">📍</a></li>
+        </ul>
+        </td>
+        <td>放低行李即刻玩！</td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2"><strong>Super Hotel Premier Ikebukuro</strong> <a href="javascript:void(0)" onclick="focusMap(35.7325, 139.7105, 'tokyo')" class="map-link">📍</a></td></tr>
+    <tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[晚/宵]</span>
+            <a href="https://www.google.com/search?q=Mutekiya+Ramen+Ikebukuro" target="_blank" class="food-item">無敵家拉麵<span class="food-popup">池袋必食濃厚豚骨。</span></a> <a href="javascript:void(0)" onclick="focusMap(35.7279, 139.7113, 'tokyo')" class="info-link">📍</a> <small>(10:30-04:00)</small>, 
+            <a href="https://www.google.com/search?q=Torikizoku+Ikebukuro" target="_blank" class="food-item">鳥貴族<span class="food-popup">平價串燒居酒屋。</span></a> <a href="javascript:void(0)" onclick="focusMap(35.7305, 139.7125, 'tokyo')" class="info-link">📍</a> <small>(17:00-05:00)</small>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 2: 12月19日 (五) - 埼玉夾公仔 & 谷中銀座 & 秋葉原 (深度遊)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>09:00</td>
+        <td>前往 <strong>埼玉縣行田市</strong><br>
+        目的地: <strong>Everyday 行田店 (世界一のゲームセンター)</strong></td>
+        <td>
+            池袋 → 吹上站 (JR) → 的士/巴士<br>
+            <span class="highlight">專攻夾公仔！</span>
+        </td>
+    </tr>
+    <tr>
+        <td>10:30</td>
+        <td>🛸 <strong>Everyday 行田店</strong> <a href="javascript:void(0)" onclick="focusMap(36.1158, 139.4867, 'tokyo')" class="map-link">📍</a> <a href="https://www.youtube.com/results?search_query=Everyday+行田店+夾公仔+攻略" target="_blank" class="info-link">📺 夾公仔攻略 Video</a><br>
+        健力士世界紀錄，最多機台！<br>
+        <small>🕒 10:00 - 24:00 (平日 12:00 開)</small></td>
+        <td>預留 2-3 小時。</td>
+    </tr>
+    <tr>
+        <td>14:00</td>
+        <td>返回東京，前往 <strong>谷中銀座 (Yanaka Ginza)</strong> <a href="javascript:void(0)" onclick="focusMap(35.7273, 139.7669, 'tokyo')" class="map-link">📍</a><br>
+        路線: 吹上 → 日暮里 (JR)</td>
+        <td>
+            <span class="highlight">Wishlist 新增！</span><br>
+            感受下町風情 & 貓街。<br>
+            <small>🕒 店舖約 10:00 - 18:00</small>
+        </td>
+    </tr>
+    <tr>
+        <td>15:30</td>
+        <td>🐱 <strong>谷中銀座 掃街</strong><br>
+        <ul>
+            <li><strong>Himitsudo (ひみつ堂)</strong>: 東京No.1 刨冰 <a href="javascript:void(0)" onclick="focusMap(35.7278, 139.7665, 'tokyo')" class="info-link">📍</a> <small>(10:00-18:00)</small></li>
+            <li><strong>Kanmidokoro Kamakura (鎌倉)</strong>: 蕨餅飲品 <a href="javascript:void(0)" onclick="focusMap(35.7273, 139.7669, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Niku no Suzuki</strong>: 炸肉餅 <a href="javascript:void(0)" onclick="focusMap(35.7275, 139.7660, 'tokyo')" class="info-link">📍</a> <small>(10:30-18:00)</small></li>
+            <li><strong>Neco Republic</strong>: 貓 Cafe <a href="javascript:void(0)" onclick="focusMap(35.7280, 139.7670, 'tokyo')" class="info-link">📍</a> <small>(11:00-18:00)</small></li>
+            <li><strong>Hachinoki (鉢の木)</strong>: 傳統甘味處 <a href="javascript:void(0)" onclick="focusMap(35.7273, 139.7669, 'tokyo')" class="info-link">📍</a></li>
+        </ul>
+        </td>
+        <td>
+            日暮里站步行 5 分鐘。
+        </td>
+    </tr>
+    <tr>
+        <td>17:00</td>
+        <td>前往 <strong>上野/御徒町</strong> (就在附近)<br>
+        <ul>
+            <li><strong>Yoshiike (吉池)</strong>: 買生果/刺身/手信 <a href="javascript:void(0)" onclick="focusMap(35.7076, 139.7745, 'tokyo')" class="info-link">📍</a> <small>(09:00-20:00)</small></li>
+            <li><strong>Sugi Drug</strong>: 藥妝掃貨 <a href="javascript:void(0)" onclick="focusMap(35.7080, 139.7740, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Pelican Cafe</strong> (如順路): 壽原町/淺草方向 <a href="javascript:void(0)" onclick="focusMap(35.7065, 139.7915, 'tokyo')" class="info-link">📍</a></li>
+        </ul>
+        </td>
+        <td>
+            <span class="highlight">Wishlist 新增！</span><br>
+            買完野可以放 Locker 或拎住行。
+        </td>
+    </tr>
+    <tr>
+        <td>18:30</td>
+        <td>⚡ <strong>秋葉原 (Akihabara) - 深度遊</strong> <a href="javascript:void(0)" onclick="focusMap(35.6984, 139.7712, 'tokyo')" class="map-link">📍</a><br>
+        <strong>Wishlist Targets:</strong>
+        <ul>
+            <li><strong>Radio Kaikan (無線電會館)</strong>: <a href="javascript:void(0)" onclick="focusMap(35.6980, 139.7720, 'tokyo')" class="info-link">📍</a><br>
+                <small>AmiAmi, Kaiyodo, Volks Doll Point (全棟都係寶)</small>
+            </li>
+            <li><strong>Tamashii Nations Store Tokyo</strong> <a href="javascript:void(0)" onclick="focusMap(35.6984, 139.7712, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Mandarake Complex</strong> (二手神物) <a href="javascript:void(0)" onclick="focusMap(35.7005, 139.7705, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Super Potato</strong> (懷舊 Game) <a href="javascript:void(0)" onclick="focusMap(35.6995, 139.7700, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Lashinbang / Gacha Gacha Shop</strong> <a href="javascript:void(0)" onclick="focusMap(35.6995, 139.7700, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Thanko</strong> (有趣 Gadgets) <a href="javascript:void(0)" onclick="focusMap(35.7000, 139.7710, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>2k540 Aki-Oka Artisan</strong> (高架橋下文創) <a href="javascript:void(0)" onclick="focusMap(35.7040, 139.7740, 'tokyo')" class="info-link">📍</a><br>
+                <small>Tokyo Noble (傘), Peach Brand, Seekbase, Mandarake CoCoo</small>
+            </li>
+        </ul>
+        </td>
+        <td>
+            動漫迷聖地。<br>
+            <small>🕒 店舖約 10:00 - 20:00</small>
+        </td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2"><strong>Super Hotel Premier Ikebukuro</strong></td></tr>
+    <tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[午]</span> 谷中銀座掃街<br>
+            <span class="food-category">[晚]</span>
+            <a href="https://www.google.com/search?q=Unatoto+Akihabara" target="_blank" class="food-item">Unatoto (宇奈とと)<span class="food-popup">平價鰻魚飯 (Wishlist)。</span></a> <a href="javascript:void(0)" onclick="focusMap(35.7000, 139.7715, 'tokyo')" class="info-link">📍</a>, 
+            <a href="https://www.google.com/search?q=Ginza+Renoir+Akihabara" target="_blank" class="food-item">Ginza Renoir<span class="food-popup">懷舊喫茶店 (Wishlist)。</span></a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 3: 12月20日 (六) - 澀谷 & 原宿 (Wishlist 重點)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>10:30</td>
+        <td><strong>原宿 (Harajuku)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6716, 139.7031, 'tokyo')" class="map-link">📍</a><br>
+        竹下通, 表參道</td>
+        <td>年輕人潮流。<br><small>🕒 店舖約 10:00 - 20:00</small></td>
+    </tr>
+    <tr>
+        <td>13:30</td>
+        <td>前往 <strong>澀谷 (Shibuya)</strong></td>
+        <td>步行或地鐵。</td>
+    </tr>
+    <tr>
+        <td>14:00</td>
+        <td>🎮 <strong>Shibuya Parco</strong> <a href="javascript:void(0)" onclick="focusMap(35.6620, 139.6986, 'tokyo')" class="map-link">📍</a><br>
+        <ul>
+            <li><strong>Nintendo Tokyo</strong> (6F): Mario/Zelda 周邊 <span class="highlight">(Wishlist!)</span> <small>(11:00-21:00)</small></li>
+            <li><strong>Pokemon Center Shibuya</strong> <a href="javascript:void(0)" onclick="focusMap(35.6620, 139.6986, 'tokyo')" class="info-link">📍</a> <small>(11:00-21:00)</small></li>
+            <li><strong>Jump Shop</strong> <a href="javascript:void(0)" onclick="focusMap(35.6620, 139.6986, 'tokyo')" class="info-link">📍</a></li>
+        </ul>
+        </td>
+        <td>
+            動漫迷必去 6 樓！
+        </td>
+    </tr>
+    <tr>
+        <td>16:30</td>
+        <td>🌇 <strong>Shibuya Sky</strong> (需預約) <a href="javascript:void(0)" onclick="focusMap(35.6580, 139.7016, 'tokyo')" class="map-link">📍</a><br>
+        澀谷最高觀景台，睇日落/夜景。</td>
+        <td>
+            <span class="highlight">Wishlist!</span><br>
+            記得提早一個月 Book 飛！<br>
+            <small>🕒 10:00 - 22:30</small>
+        </td>
+    </tr>
+    <tr>
+        <td>19:00</td>
+        <td>🍲 <strong>Kumachan Onsen (小熊溫泉火鍋)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6605, 139.7010, 'tokyo')" class="map-link">📍</a><br>
+        打卡必食！</td>
+        <td>
+            <span class="highlight">Wishlist!</span><br>
+            需預約。<br>
+            <small>🕒 11:00 - 22:00</small>
+        </td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2"><strong>Super Hotel Premier Ikebukuro</strong></td></tr>
+    <tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[午]</span>
+            <a href="https://www.google.com/search?q=Afuri+Ramen+Harajuku" target="_blank" class="food-item">AFURI<span class="food-popup">柚子鹽拉麵。</span></a><br>
+            <span class="food-category">[晚]</span>
+            <a href="https://www.google.com/search?q=Kumachan+Onsen+Shibuya" target="_blank" class="food-item">Kumachan Onsen<span class="food-popup">小熊溫泉火鍋。</span></a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 4: 12月21日 (日) - 東京站手信 & 銀座 & 麻布台 & 歌舞伎町</h3>
+<div class="note">
+    <strong>行程變動：</strong> 此日原為富士急樂園。因應你的 Wishlist 包含大量東京市區景點 (手信、麻布台、歌舞伎町)，建議改為市區遊。如堅持去富士急，需放棄以下行程。
+</div>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>09:30</td>
+        <td>🛍️ <strong>東京站手信掃貨 (Tokyo Station)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="map-link">📍</a><br>
+        地點: Gransta / 大丸 / 東京站一番街<br>
+        <strong>Wishlist Targets:</strong>
+        <ul>
+            <li><strong>Maple Mania</strong> (Gransta) <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Audrey</strong> (Gransta) <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>NY Perfect Cheese</strong> (南通路) <a href="javascript:void(0)" onclick="focusMap(35.6805, 139.7665, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Tulip Rose</strong> (Gransta) <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Sugar Butter Sand Tree</strong> (大丸) <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Ivorish</strong> (Gransta) <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Shiseido Parlour</strong> (Yaesu) <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Tokyo Banana</strong> <a href="javascript:void(0)" onclick="focusMap(35.6812, 139.7671, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Tokyo Character Street</strong> (一番街): <br>
+                <small>Mofusand, Kirby Cafe Petit, Crayon Shinchan, Jump Shop, TV Asahi, Tomica, GBL (Donguri)</small>
+            </li>
+        </ul>
+        </td>
+        <td>
+            <span class="highlight">早上貨源最齊！</span><br>
+            買完建議即刻搵 Locker 鎖起，或寄返酒店。
+        </td>
+    </tr>
+    <tr>
+        <td>12:30</td>
+        <td>前往 <strong>銀座 (Ginza)</strong> (步行或地鐵) <a href="javascript:void(0)" onclick="focusMap(35.6712, 139.7665, 'tokyo')" class="map-link">📍</a><br>
+        <ul>
+            <li><strong>Bunmeido (文明堂)</strong>: 買 Castella/布丁 <a href="javascript:void(0)" onclick="focusMap(35.6710, 139.7648, 'tokyo')" class="info-link">📍</a> <small>(11:00-19:00)</small></li>
+            <li><strong>Mark's Style Tokyo</strong>: GINZA SIX 5F (文具) <a href="javascript:void(0)" onclick="focusMap(35.6696, 139.7640, 'tokyo')" class="info-link">📍</a> <small>(10:30-20:30)</small></li>
+        </ul>
+        </td>
+        <td>
+            <span class="highlight">Wishlist!</span><br>
+            順便食 Lunch。
+        </td>
+    </tr>
+    <tr>
+        <td>15:00</td>
+        <td>前往 <strong>麻布台之丘 (Azabudai Hills)</strong> <a href="javascript:void(0)" onclick="focusMap(35.6604, 139.7292, 'tokyo')" class="map-link">📍</a><br>
+        東京最新地標！<br>
+        <ul>
+            <li><strong>TeamLab Borderless</strong> (需預約) <a href="javascript:void(0)" onclick="focusMap(35.6600, 139.7300, 'tokyo')" class="info-link">📍</a> <small>(10:00-21:00)</small></li>
+            <li><strong>Sky Lobby</strong> (33F 免費觀景) <a href="javascript:void(0)" onclick="focusMap(35.6595, 139.7290, 'tokyo')" class="info-link">📍</a></li>
+            <li><strong>Shops:</strong> % Arabica, Shodai Bio Nature, Teapond, Suzukake, Gin no Mori, Criollo, Yakiigakiya</li>
+        </ul>
+        </td>
+        <td>
+            <span class="highlight">Wishlist!</span><br>
+            預留 3 小時。
+        </td>
+    </tr>
+    <tr>
+        <td>19:00</td>
+        <td>前往 <strong>新宿 (Shinjuku)</strong><br>
+        <strong>Tokyu Kabukicho Tower</strong> <a href="javascript:void(0)" onclick="focusMap(35.6954, 139.7005, 'tokyo')" class="map-link">📍</a><br>
+        <ul>
+            <li><strong>Namco Tokyo (3F)</strong>: 夾公仔/飲野 <a href="javascript:void(0)" onclick="focusMap(35.6954, 139.7005, 'tokyo')" class="info-link">📍</a> <small>(11:00-25:00)</small></li>
+            <li><strong>The Tokyo Matrix (4F)</strong>: 地下城攻略 <a href="javascript:void(0)" onclick="focusMap(35.6954, 139.7005, 'tokyo')" class="info-link">📍</a> <small>(10:00-22:00)</small></li>
+        </ul>
+        </td>
+        <td>
+            <span class="highlight">Wishlist!</span><br>
+            感受新宿夜生活。
+        </td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2"><strong>Super Hotel Premier Ikebukuro</strong></td></tr>
+    <tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[午]</span>
+            <a href="https://www.google.com/search?q=Soranoiro+Nippon+Tokyo+Station" target="_blank" class="food-item">Soranoiro / Ikaruga<span class="food-popup">東京站拉麵街 (Wishlist)。</span></a><br>
+            <span class="food-category">[晚]</span>
+            <a href="https://www.google.com/search?q=Shogun+Burger+Shinjuku" target="_blank" class="food-item">Shogun Burger<span class="food-popup">和牛漢堡 (Wishlist!)。</span></a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 5: 12月22日 (一) - 東京迪士尼樂園 (Land)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>08:00</td>
+        <td>前往 <strong>Tokyo Disneyland</strong><br>
+        Check-out 池袋，帶行李去舞濱 (寄存)</td>
+        <td>
+            <span class="highlight">Wishlist!</span><br>
+            全日夢幻體驗。
+        </td>
+    </tr>
+    <tr>
+        <td>09:00</td>
+        <td>🏰 <strong>Disneyland 全日遊</strong> <a href="javascript:void(0)" onclick="focusMap(35.6329, 139.8804, 'tokyo')" class="map-link">📍</a> <a href="https://www.youtube.com/results?search_query=東京迪士尼+App+教學+攻略" target="_blank" class="info-link">📺 App 教學 Video</a><br>
+        必玩: 美女與野獸, Baymax, 太空山</td>
+        <td>
+            記得抽 Pass。<br>
+            <small>🕒 09:00 - 21:00</small>
+        </td>
+    </tr>
+    <tr>
+        <td>21:30</td>
+        <td>前往 <strong>迪士尼周邊酒店</strong></td>
+        <td>住一晚方便聽日去 Sea。</td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2"><strong>Tokyo Disney Celebration Hotel</strong> (或同區)</td></tr>
+</table>
+
+<h3>Day 6: 12月23日 (二) - 東京迪士尼海洋 (Sea) & 夜行巴士</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>08:00</td>
+        <td>前往 <strong>Tokyo DisneySea</strong> <a href="javascript:void(0)" onclick="focusMap(35.6267, 139.8850, 'tokyo')" class="map-link">📍</a><br>
+        寄存行李</td>
+        <td>
+            必去 Fantasy Springs (新園區)。<br>
+            <small>🕒 09:00 - 21:00</small>
+        </td>
+    </tr>
+    <tr>
+        <td>21:00</td>
+        <td>前往 <strong>夜行巴士站</strong></td>
+        <td>準備去大阪。</td>
+    </tr>
+    <tr>
+        <td>22:00</td>
+        <td>🚌 <strong>乘搭夜行巴士 (Willer Express)</strong> <a href="https://www.youtube.com/results?search_query=Willer+Express+夜行巴士+搭乘+教學" target="_blank" class="info-link">📺 搭乘教學 Video</a></td>
+        <td>前往大阪 (約 8 小時)。</td>
+    </tr>
+    <tr class="hotel-row"><td>🏨 住宿</td><td colspan="2">🚌 <strong>夜行巴士上</strong></td></tr>
+</table>
+
+<h3>Day 7: 12月24日 (三) - 抵達大阪 & 難波心齋橋 (平安夜)</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>07:30</td>
+        <td>抵達 <strong>大阪 (梅田/難波)</strong></td>
+        <td>
+            巴士通常停梅田 Sky Building 或 OCAT (難波)。
+        </td>
+    </tr>
+    <tr>
+        <td>08:30</td>
+        <td>前往酒店 <strong>寄存行李</strong><br>
+        地點: 難波/心齋橋一帶</td>
+        <td>
+            先去酒店放低野，梳洗一下 (可去網吧或錢湯洗澡)。
+        </td>
+    </tr>
+    <tr>
+        <td>10:00</td>
+        <td><strong>黑門市場</strong> (早午餐) <a href="javascript:void(0)" onclick="focusMap(34.6653, 135.5070, 'osaka')"  class="map-link">📍</a><br>
+        食海鮮、和牛串。<br>
+        <small>🕒 09:00 - 18:00</small>
+        </td>
+        <td>
+            遊客區價錢稍貴，但氣氛好。
+        </td>
+    </tr>
+    <tr>
+        <td>13:00</td>
+        <td><strong>難波 & 道頓堀 & 心齋橋</strong> <a href="javascript:void(0)" onclick="focusMap(34.6687, 135.5013, 'osaka')"  class="map-link">📍</a><br>
+        <ul>
+            <li><strong>Glico 跑跑人</strong>: 打卡位</li>
+            <li><strong>Round 1 千日前</strong>: (24h) 大阪夾公仔</li>
+            <li><strong>Parco 心齋橋</strong>: (10:00-20:00) 又是動漫層 (Chiikawa, Godzilla)</li>
+        </ul>
+        </td>
+        <td>
+            平安夜，心齋橋會有燈飾，人流極多。
+        </td>
+    </tr>
+    <tr class="hotel-row">
+        <td>🏨 住宿</td>
+        <td colspan="2"><strong>Sotetsu Fresa Inn Osaka Namba</strong> (或同區酒店)</td>
+    </tr>
+    
+<tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[早]</span>
+            <a href="https://www.google.com/search?q=Kinryu+Ramen+Dotonbori" target="_blank" class="food-item">
+                金龍拉麵 (24h)
+                <span class="food-popup">道頓堀地標，24小時營業，榻榻米座位。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.6686, 135.504, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[午]</span>
+            <a href="https://www.google.com/search?q=Kani+Doraku+Lunch" target="_blank" class="food-item">
+                蟹道樂 (午市) (11:00-22:00)
+                <span class="food-popup">必食蟹全宴，午市套餐性價比極高。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.6687, 135.5038, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[晚]</span>
+            <a href="https://www.google.com/search?q=Mizuno+Okonomiyaki" target="_blank" class="food-item">
+                美津の (大阪燒) (11:00-22:00)
+                <span class="food-popup">米芝蓮推薦，山藥燒口感獨特。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.6685, 135.5031, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[宵]</span>
+            <a href="https://www.google.com/search?q=Acchichi+Honpo+Takoyaki" target="_blank" class="food-item">
+                あっちち本舗 (章魚燒) (09:00-02:00)
+                <span class="food-popup">道頓堀河邊，皮薄餡靚，小心燙口。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.669, 135.5037, 'osaka')" class="food-map-link">📍</a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 8: 12月25日 (四) - 大阪環球影城 (USJ) 聖誕節</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>07:30</td>
+        <td>前往 <strong>USJ</strong><br>
+        路線: 難波 (阪神線) → 西九條 (轉 JR) → 環球城</td>
+        <td>
+            ⏱️ 時間: 約 30 分鐘<br>
+            <span class="highlight">聖誕正日，人流極多，必須買 Express Pass (快速通關)。</span>
+        </td>
+    </tr>
+    <tr>
+        <td>08:30</td>
+        <td>🌍 <strong>Universal Studios Japan</strong> 全日遊 <a href="javascript:void(0)" onclick="focusMap(34.6654, 135.4323, 'osaka')"  class="map-link">📍</a><br>
+        必玩區域:<br>
+        1. <strong>Super Nintendo World</strong> (需整理券/Express)<br>
+        2. <strong>Harry Potter</strong><br>
+        3. <strong>Minions</strong><br>
+        <small>🕒 08:30 - 21:30</small>
+        </td>
+        <td>
+            Mario Kart 必玩！<br>
+            聖誕會有特別 Show 同巨型聖誕樹。<br>
+            <a href="https://www.youtube.com/results?search_query=USJ+快速通關+攻略+買飛" target="_blank" class="info-link">📺 快速通關攻略 Video</a>
+        </td>
+    </tr>
+    <tr>
+        <td>20:00</td>
+        <td>離開 USJ，返回難波食晚餐</td>
+        <td></td>
+    </tr>
+    <tr class="hotel-row">
+        <td>🏨 住宿</td>
+        <td colspan="2"><strong>Sotetsu Fresa Inn Osaka Namba</strong></td>
+    </tr>
+    
+<tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[午]</span>
+            <a href="https://www.usj.co.jp/web/en/us/restaurants/three-broomsticks" target="_blank" class="food-item">
+                Three Broomsticks
+                <span class="food-popup">哈利波特三根掃帚，必飲 Butterbeer。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.6654, 135.4323, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[晚]</span>
+            <a href="https://www.usj.co.jp/web/en/us/restaurants/kinopios-cafe" target="_blank" class="food-item">
+                Kinopio's Cafe
+                <span class="food-popup">馬里奧蘑菇餐廳，造型超可愛 (需整理券)。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.6654, 135.4323, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[宵]</span>
+            <a href="https://www.google.com/search?q=551+Horai+Pork+Bun" target="_blank" class="food-item">
+                551 Horai (蓬萊)
+                <span class="food-popup">大阪名物豚肉包，皮甜肉汁多。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.6687, 135.5013, 'osaka')" class="food-map-link">📍</a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 9: 12月26日 (五) - 日本橋動漫街 & 通天閣</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>11:00</td>
+        <td>🤖 <strong>日本橋 (Den Den Town)</strong> <a href="javascript:void(0)" onclick="focusMap(34.6595, 135.506, 'osaka')"  class="map-link">📍</a><br>
+        大阪秋葉原，大量模型店、卡店、女僕 Cafe。<br>
+        <ul>
+            <li><strong>Super Kids Land</strong>: (10:00-20:00) 模型迷必去</li>
+            <li><strong>Animate</strong>: (11:00-21:00) 動漫周邊</li>
+        </ul>
+        </td>
+        <td>
+            就在難波行過去，好近。
+        </td>
+    </tr>
+    <tr>
+        <td>15:00</td>
+        <td><strong>新世界 & 通天閣</strong> <a href="javascript:void(0)" onclick="focusMap(34.6525, 135.5063, 'osaka')"  class="map-link">📍</a><br>
+        懷舊大阪風情，巨型招牌。<br>
+        </td>
+        <td>
+            必玩: 通天閣 TOWER SLIDER (巨型滑梯) (10:00-20:00)。
+        </td>
+    </tr>
+    <tr>
+        <td>18:00</td>
+        <td><strong>阿倍野 Harukas 300</strong> (Optional)<br>
+        睇夜景 (比梅田空中庭園更高)</td>
+        <td></td>
+    </tr>
+    <tr class="hotel-row">
+        <td>🏨 住宿</td>
+        <td colspan="2"><strong>Sotetsu Fresa Inn Osaka Namba</strong></td>
+    </tr>
+    
+<tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[午]</span>
+            <a href="https://www.google.com/search?q=Takeru+Beef+Bowl+Osaka" target="_blank" class="food-item">
+                1ポンドのステーキハンバーグ タケル (11:00-22:30)
+                <span class="food-popup">日本橋大份量牛排丼，肉食獸最愛。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.66, 135.506, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[晚]</span>
+            <a href="https://www.google.com/search?q=Kushikatsu+Daruma+Shinsekai" target="_blank" class="food-item">
+                串カツだるま (達摩串炸) (11:00-22:30)
+                <span class="food-popup">新世界元祖串炸，記住「禁止二次沾醬」！</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.652, 135.5062, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[宵]</span>
+            <a href="https://www.google.com/search?q=Super+Tamade" target="_blank" class="food-item">
+                Super Tamade (玉出超市) (24h)
+                <span class="food-popup">大阪傳奇平價超市，霓虹燈招牌，宵夜尋寶地。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.667, 135.506, 'osaka')" class="food-map-link">📍</a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 10: 12月27日 (六) - 萬博公園 (Expocity) 或 奈良鹿</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>10:00</td>
+        <td><strong>方案 A: Expocity (萬博紀念公園)</strong> <a href="javascript:void(0)" onclick="focusMap(34.8056, 135.5322, 'osaka')"  class="map-link">📍</a><br>
+        全日本最大摩天輪、NIFREL (10:00-18:00)、VS PARK (10:00-21:00)。<br>
+        <br>
+        <strong>方案 B: 奈良公園 (Nara Park)</strong> <a href="javascript:void(0)" onclick="focusMap(34.685, 135.843, 'osaka')"  class="map-link">📍</a><br>
+        餵鹿，睇東大寺 (08:00-17:00)。<br>
+        </td>
+        <td>
+            年輕人推薦去 <strong>VS PARK</strong>，有超多綜藝節目式運動遊戲，好玩！
+        </td>
+    </tr>
+    <tr>
+        <td>16:00</td>
+        <td>返回大阪市區，最後衝刺 Shopping<br>
+        梅田 / 心齋橋</td>
+        <td>
+            買手信，藥妝。
+        </td>
+    </tr>
+    <tr class="hotel-row">
+        <td>🏨 住宿</td>
+        <td colspan="2"><strong>Sotetsu Fresa Inn Osaka Namba</strong></td>
+    </tr>
+<tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[午]</span>
+            <a href="https://www.google.com/search?q=Kura+Sushi+Expocity" target="_blank" class="food-item">
+                Kura Sushi (藏壽司) (11:00-23:00)
+                <span class="food-popup">Expocity 內的大型迴轉壽司，每5碟可抽獎。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.8056, 135.5322, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[晚]</span>
+            <a href="https://www.google.com/search?q=Yakiniku+Rikimaru+Namba" target="_blank" class="food-item">
+                力丸燒肉 (放題) (16:00-23:00)
+                <span class="food-popup">難波高CP值燒肉放題，肉質鮮美。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.6687, 135.5013, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[宵]</span>
+            <a href="https://www.google.com/search?q=Rikuro+Ojisan+Cheesecake" target="_blank" class="food-item">
+                Rikuro Ojisan (老爺爺蛋糕) (09:00-20:00)
+                <span class="food-popup">剛出爐震騰騰芝士蛋糕，必買手信/宵夜。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.6687, 135.5013, 'osaka')" class="food-map-link">📍</a>
+        </td>
+    </tr>
+</table>
+
+<h3>Day 11: 12月28日 (日) - 回程</h3>
+<table>
+    <tr><th width="15%">時間</th><th>活動</th><th>交通/備註</th></tr>
+    <tr>
+        <td>10:00</td>
+        <td>Check-out，前往 <strong>關西機場 (KIX)</strong> <a href="javascript:void(0)" onclick="focusMap(34.4320, 135.2304, 'osaka')"  class="map-link">📍</a><br>
+        推薦: <strong>Nankai Rapi:t</strong> (南海電鐵特急)<br>
+        路線: 難波 → 關西機場</td>
+        <td>
+            ⏱️ 時間: 約 40 分鐘<br>
+            💰 車費: 約 1,450 Yen<br>
+            型格藍色列車，需劃位。<br>
+            <a href="https://www.youtube.com/results?search_query=南海電鐵+Rapit+購票+教學" target="_blank" class="info-link">📺 購票教學 Video</a>
+        </td>
+    </tr>
+    <tr>
+        <td>13:00</td>
+        <td>飛機起飛，返回溫暖的家</td>
+        <td>
+            記得預留時間行機場免稅店。
+        </td>
+    </tr>
+<tr class="food-row">
+        <td>🍽️ 美食</td>
+        <td colspan="2">
+            <span class="food-category">[早]</span>
+            <a href="https://www.google.com/search?q=Endo+Sushi+Osaka" target="_blank" class="food-item">
+                Endo Sushi (中央市場) (05:00-14:00)
+                <span class="food-popup">百年壽司老店，早起必食新鮮握壽司。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.686, 135.483, 'osaka')" class="food-map-link">📍</a>
+            <span class="food-category">[午]</span>
+            <a href="https://www.google.com/search?q=Kansai+Airport+Food+Court" target="_blank" class="food-item">
+                機場美食街 (07:00-22:00)
+                <span class="food-popup">離開前最後衝刺，神座拉麵/杵屋烏冬。</span>
+            </a>
+            <a href="javascript:void(0)" onclick="focusMap(34.432, 135.2304, 'osaka')" class="food-map-link">📍</a>
+        </td>
+    </tr>
+</table>
+
+<h2>🚌 關於夜間巴士 (Night Bus) 與行李</h2>
+<div class="note">
+    <p><strong>夜間巴士優點：</strong> 省一晚住宿費，睡醒就到大阪。<br>
+    <strong>缺點：</strong> 比較累，無法完全平躺。</p>
+</div>
+<ul>
+    <li><strong>預訂：</strong> 建議用 <a href="https://willerexpress.com/tw/" target="_blank">Willer Express</a> (有中文介面，車比較舒服)。</li>
+    <li><strong>行李處理 (重要！)：</strong>
+        <ul>
+            <li><strong>大件行李：</strong> 巴士有車底行李艙，每人通常限一件大喼 (28-30吋都可以，但最好Check清楚巴士公司規定)。</li>
+            <li><strong>隨身行李：</strong> 背囊帶上車。</li>
+            <li><strong>到達大阪後：</strong> 早上 7 點幾未有得 Check-in。
+                <ol>
+                    <li><strong>首選：</strong> 先去當晚住的酒店，問 "Luggage Keep" (寄放行李)。通常都可以免費寄放。</li>
+                    <li><strong>次選：</strong> 車站 Coin Locker (投幣儲物櫃)。難波/梅田站好多，大約 700-1000 Yen 一個大櫃。</li>
+                </ol>
+            </li>
+        </ul>
+
+
+<script>
+    // Map Initialization Script (Simplified for v12)
+    var mapTokyo = L.map('map-tokyo').setView([35.6895, 139.6917], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(mapTokyo);
+    
+    var mapOsaka = L.map('map-osaka').setView([34.6937, 135.5023], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(mapOsaka);
+
+    // Add Markers (Examples)
+    L.marker([35.7719, 140.3929]).addTo(mapTokyo).bindPopup("Narita Airport (NRT)");
+    L.marker([35.7325, 139.7105]).addTo(mapTokyo).bindPopup("Super Hotel Premier Ikebukuro");
+    L.marker([35.7289, 139.7124]).addTo(mapTokyo).bindPopup("GIGO Ikebukuro");
+    L.marker([35.7295, 139.7130]).addTo(mapTokyo).bindPopup("Round 1 Ikebukuro");
+    L.marker([35.7279, 139.7113]).addTo(mapTokyo).bindPopup("Mutekiya Ramen");
+    L.marker([35.7305, 139.7125]).addTo(mapTokyo).bindPopup("Torikizoku Ikebukuro");
+
+    L.marker([36.1158, 139.4867]).addTo(mapTokyo).bindPopup("Everyday 行田店 (Day 2)");
+    L.marker([35.7273, 139.7669]).addTo(mapTokyo).bindPopup("Yanaka Ginza (Day 2)");
+    L.marker([35.7278, 139.7665]).addTo(mapTokyo).bindPopup("Himitsudo (Day 2)");
+    L.marker([35.7076, 139.7745]).addTo(mapTokyo).bindPopup("Yoshiike Ueno (Day 2)");
+    L.marker([35.6984, 139.7712]).addTo(mapTokyo).bindPopup("Akihabara (Day 2)");
+    
+    L.marker([35.6716, 139.7031]).addTo(mapTokyo).bindPopup("Harajuku (Day 3)");
+    L.marker([35.6620, 139.6986]).addTo(mapTokyo).bindPopup("Shibuya Parco / Nintendo (Day 3)");
+    L.marker([35.6580, 139.7016]).addTo(mapTokyo).bindPopup("Shibuya Sky (Day 3)");
+    L.marker([35.6605, 139.7010]).addTo(mapTokyo).bindPopup("Kumachan Onsen (Day 3)");
+    
+    L.marker([35.6812, 139.7671]).addTo(mapTokyo).bindPopup("Tokyo Station (Day 4)");
+    L.marker([35.6712, 139.7665]).addTo(mapTokyo).bindPopup("Ginza (Day 4)");
+    L.marker([35.6604, 139.7292]).addTo(mapTokyo).bindPopup("Azabudai Hills (Day 4)");
+    L.marker([35.6954, 139.7005]).addTo(mapTokyo).bindPopup("Kabukicho Tower (Day 4)");
+    
+    L.marker([35.6329, 139.8804]).addTo(mapTokyo).bindPopup("Disneyland (Day 5)");
+    L.marker([35.6267, 139.8850]).addTo(mapTokyo).bindPopup("DisneySea (Day 6)");
+
+    L.marker([35.7275, 139.7660]).addTo(mapTokyo).bindPopup("Niku no Suzuki (Yanaka)");
+    L.marker([35.7280, 139.7670]).addTo(mapTokyo).bindPopup("Neco Republic (Yanaka)");
+    L.marker([35.7080, 139.7740]).addTo(mapTokyo).bindPopup("Sugi Drug Ueno");
+
+    L.marker([35.6620, 139.6986]).addTo(mapTokyo).bindPopup("Nintendo Tokyo (Parco 6F)");
+    
+    L.marker([35.6812, 139.7671]).addTo(mapTokyo).bindPopup("Maple Mania / Audrey (Gransta B1)");
+    L.marker([35.6805, 139.7665]).addTo(mapTokyo).bindPopup("NY Perfect Cheese (South Passage)");
+    L.marker([35.6818, 139.7685]).addTo(mapTokyo).bindPopup("Tokyo Character Street (Yaesu B1)");
+
+    L.marker([35.6710, 139.7648]).addTo(mapTokyo).bindPopup("Bunmeido Ginza");
+    L.marker([35.6696, 139.7640]).addTo(mapTokyo).bindPopup("Mark's Style (Ginza Six)");
+
+    L.marker([35.6600, 139.7300]).addTo(mapTokyo).bindPopup("TeamLab Borderless (Garden Plaza B)");
+    L.marker([35.6595, 139.7290]).addTo(mapTokyo).bindPopup("Sky Lobby (Mori JP Tower 33F)");
+    
+    L.marker([35.6954, 139.7005]).addTo(mapTokyo).bindPopup("Namco Tokyo / Matrix (Kabukicho Tower)");
+    
+    // New Markers for v12
+    L.marker([35.6980, 139.7720]).addTo(mapTokyo).bindPopup("Radio Kaikan (Akihabara)");
+    L.marker([35.6995, 139.7700]).addTo(mapTokyo).bindPopup("Super Potato / Lashinbang");
+    L.marker([35.7040, 139.7740]).addTo(mapTokyo).bindPopup("2k540 Aki-Oka Artisan");
+    L.marker([35.7000, 139.7715]).addTo(mapTokyo).bindPopup("Unatoto Akihabara");
+
+    // Osaka Markers
+    L.marker([34.6686, 135.504]).addTo(mapOsaka).bindPopup("金龍拉麵");
+    L.marker([34.6687, 135.5038]).addTo(mapOsaka).bindPopup("蟹道樂");
+    L.marker([34.6685, 135.5031]).addTo(mapOsaka).bindPopup("美津の (大阪燒)");
+    L.marker([34.669, 135.5037]).addTo(mapOsaka).bindPopup("あっちち本舗");
+    L.marker([34.6654, 135.4323]).addTo(mapOsaka).bindPopup("Three Broomsticks / Kinopio's Cafe (USJ)");
+    L.marker([34.6687, 135.5013]).addTo(mapOsaka).bindPopup("551 Horai / Rikuro Ojisan / 力丸燒肉");
+    L.marker([34.66, 135.506]).addTo(mapOsaka).bindPopup("1ポンドのステーキハンバーグ タケル");
+    L.marker([34.652, 135.5062]).addTo(mapOsaka).bindPopup("串カツだるま");
+    L.marker([34.667, 135.506]).addTo(mapOsaka).bindPopup("Super Tamade");
+    L.marker([34.8056, 135.5322]).addTo(mapOsaka).bindPopup("Kura Sushi / Expocity");
+    L.marker([34.686, 135.483]).addTo(mapOsaka).bindPopup("Endo Sushi");
+    L.marker([34.432, 135.2304]).addTo(mapOsaka).bindPopup("關西機場 (KIX)");
+    L.marker([34.6653, 135.5070]).addTo(mapOsaka).bindPopup("黑門市場");
+    L.marker([34.6595, 135.506]).addTo(mapOsaka).bindPopup("日本橋 (Den Den Town)");
+    L.marker([34.6525, 135.5063]).addTo(mapOsaka).bindPopup("通天閣");
+    L.marker([34.685, 135.843]).addTo(mapOsaka).bindPopup("奈良公園");
+
+    function locateUser(region) {
+        alert("Geolocation feature requires HTTPS.");
+    }
+    
+    function focusMap(lat, lng, region) {
+        if(region === 'tokyo') {
+            mapTokyo.setView([lat, lng], 15);
+            L.marker([lat, lng]).addTo(mapTokyo).openPopup();
+        } else {
+            mapOsaka.setView([lat, lng], 15);
+            L.marker([lat, lng]).addTo(mapOsaka).openPopup();
+        }
+    }
+</script>
+
+</body>
+</html>

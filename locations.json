@@ -1,0 +1,152 @@
+{
+  "Mutekiya Ramen (Ikebukuro)": {
+    "lat": 35.7279,
+    "lng": 139.7113,
+    "region": "tokyo"
+  },
+  "Torikizoku (Ikebukuro East Exit)": {
+    "lat": 35.7305,
+    "lng": 139.7125,
+    "region": "tokyo"
+  },
+  "Hungry Bear Curry (Tokyo Disneyland)": {
+    "lat": 35.6331,
+    "lng": 139.8805,
+    "region": "tokyo"
+  },
+  "Queen of Hearts Banquet Hall (Tokyo Disneyland)": {
+    "lat": 35.6318,
+    "lng": 139.8813,
+    "region": "tokyo"
+  },
+  "Vulcania Restaurant (Tokyo DisneySea)": {
+    "lat": 35.6267,
+    "lng": 139.8850,
+    "region": "tokyo"
+  },
+  "Sebastian's Calypso Kitchen (Tokyo DisneySea)": {
+    "lat": 35.6264,
+    "lng": 139.8835,
+    "region": "tokyo"
+  },
+  "Ekibenya Matsuri (Tokyo Station)": {
+    "lat": 35.6812,
+    "lng": 139.7671,
+    "region": "tokyo"
+  },
+  "Maidreamin Akihabara (Main Store)": {
+    "lat": 35.6984,
+    "lng": 139.7712,
+    "region": "tokyo"
+  },
+  "Gyukatsu Motomura (Akihabara)": {
+    "lat": 35.6978,
+    "lng": 139.7725,
+    "region": "tokyo"
+  },
+  "PABLO Mini (Akihabara)": {
+    "lat": 35.6982,
+    "lng": 139.7728,
+    "region": "tokyo"
+  },
+  "Bills (Omotesando)": {
+    "lat": 35.6694,
+    "lng": 139.7060,
+    "region": "tokyo"
+  },
+  "AFURI (Harajuku)": {
+    "lat": 35.6716,
+    "lng": 139.7031,
+    "region": "tokyo"
+  },
+  "Uobei Sushi (Shibuya Dogenzaka)": {
+    "lat": 35.6595,
+    "lng": 139.6985,
+    "region": "tokyo"
+  },
+  "Houtou Fudou (Kawaguchiko Station / near FujiQ)": {
+    "lat": 35.4977,
+    "lng": 138.7695,
+    "region": "tokyo"
+  },
+  "CoCo Ichibanya (Kawaguchiko)": {
+    "lat": 35.5010,
+    "lng": 138.7630,
+    "region": "tokyo"
+  },
+  "Kinryu Ramen (Dotonbori)": {
+    "lat": 34.6687,
+    "lng": 135.5038,
+    "region": "osaka"
+  },
+  "Kani Doraku (Dotonbori Honten)": {
+    "lat": 34.6687,
+    "lng": 135.5033,
+    "region": "osaka"
+  },
+  "Mizuno Okonomiyaki (Dotonbori)": {
+    "lat": 34.6685,
+    "lng": 135.5035,
+    "region": "osaka"
+  },
+  "Acchichi Honpo (Dotonbori)": {
+    "lat": 34.6690,
+    "lng": 135.5036,
+    "region": "osaka"
+  },
+  "Three Broomsticks (USJ)": {
+    "lat": 34.6654,
+    "lng": 135.4323,
+    "region": "osaka"
+  },
+  "Kinopio's Cafe (USJ)": {
+    "lat": 34.6654,
+    "lng": 135.4323,
+    "region": "osaka"
+  },
+  "551 Horai (Namba)": {
+    "lat": 34.6655,
+    "lng": 135.5015,
+    "region": "osaka"
+  },
+  "Takeru (Nipponbashi)": {
+    "lat": 34.6625,
+    "lng": 135.5055,
+    "region": "osaka"
+  },
+  "Kushikatsu Daruma (Shinsekai)": {
+    "lat": 34.6520,
+    "lng": 135.5066,
+    "region": "osaka"
+  },
+  "Super Tamade (Nipponbashi)": {
+    "lat": 34.6665,
+    "lng": 135.5075,
+    "region": "osaka"
+  },
+  "Kura Sushi (Expocity)": {
+    "lat": 34.8055,
+    "lng": 135.5320,
+    "region": "osaka"
+  },
+  "Yakiniku Rikimaru (Namba)": {
+    "lat": 34.6650,
+    "lng": 135.5010,
+    "region": "osaka"
+  },
+  "Rikuro Ojisan (Namba)": {
+    "lat": 34.6655,
+    "lng": 135.5015,
+    "region": "osaka"
+  },
+  "Endo Sushi (Osaka Central Fish Market)": {
+    "lat": 34.6850,
+    "lng": 135.4830,
+    "region": "osaka"
+  },
+  "Kansai Airport (KIX)": {
+    "lat": 34.4320,
+    "lng": 135.2304,
+    "region": "osaka"
+  }
+}
