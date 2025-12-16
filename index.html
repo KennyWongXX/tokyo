@@ -519,13 +519,17 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(mapOsaka);
 
     function focusMap(lat, lng, region) {
-        if(region === 'tokyo') {
-            mapTokyo.setView([lat, lng], 15);
-            L.marker([lat, lng]).addTo(mapTokyo).openPopup();
-        } else {
-            mapOsaka.setView([lat, lng], 15);
-            L.marker([lat, lng]).addTo(mapOsaka).openPopup();
-        }
+        var map = region === 'tokyo' ? mapTokyo : mapOsaka;
+        var mapId = region === 'tokyo' ? 'map-tokyo' : 'map-osaka';
+        
+        // Scroll to map
+        var mapElement = document.getElementById(mapId);
+        mapElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        map.setView([lat, lng], 16);
+        
+        // Add marker and open popup
+        L.marker([lat, lng]).addTo(map).bindPopup("📍 Here!").openPopup();
     }
     
     // Add Markers (Simplified for brevity, but includes key new ones)
