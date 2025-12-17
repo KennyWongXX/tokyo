@@ -2,10 +2,12 @@
 $OUTPUT_FILE = "Wishlist_Selection.html"
 
 $categories = @{
-    "Asakusa (淺草)" = @("Asakusa", "Inujurushi", "Nakamise", "pelican", "sansada", "yoroshi", "淺草", "Kukurihime", "Akimitsu")
+    "Asakusa / Skytree (淺草/晴空塔)" = @("Asakusa", "Inujurushi", "Nakamise", "pelican", "sansada", "yoroshi", "淺草", "Kukurihime", "Akimitsu", "sky tree", "solamachi", "oshiage", "mizumachi", "azumabashi", "sumida")
+    "Ginza / Tsukiji (銀座/築地)" = @("Ginza", "Tsukiji", "kabukiza", "Fjimaki", "moomin", "suzu cafe", "kitsuneya", "tonboya", "seagen", "unitora")
+    "Shibuya (澀谷)" = @("Shibuya", "kumachan", "miyashita")
     "Shimokitazawa (下北澤)" = @("shimokita", "bonus track", "Desk labo", "mikan", "tefu", "Universal bakes", "Garage Department")
     "Kichijoji (吉祥寺)" = @("Kichijoji", "b-company", "hamburg", "kayashima", "nikkiya", "petit mura", "satou", "Minmin", "Maunga")
-    "Roppongi / Azabudai (六本木/麻布台)" = @("Roppongi", "Azabudai", "hills house", "Iruca", "Mori Art", "shodai", "Suzukake", "teamlab", "tokyo tower", "Salvatore Cuomo", "Arabica")
+    "Roppongi / Azabudai (六本木/麻布台)" = @("Roppongi", "Azabudai", "hills house", "Iruca", "Mori Art", "shodai", "Suzukake", "teamlab", "tokyo tower", "Salvatore Cuomo", "Arabica", "midtown")
     "Harajuku / Omotesando (原宿/表參道)" = @("Harajuku", "IKEA", "Moma", "santa monica", "wego", "XLARGE", "原宿", "good day", "thank you mark")
     "Ebisu / Daikanyama (惠比壽/代官山)" = @("ebisu", "espresso D", "TOP Museum", "tsutaya")
     "Yanaka / Ueno (谷中/上野)" = @("HACHINOKI", "Himitsudo", "Kamakura", "Neco Republic", "Niku no suzuki", "Yoshike", "Sugi Drug")
@@ -18,16 +20,18 @@ $categories = @{
 
 # Ordered keys for display
 $categoryOrder = @(
-    "Asakusa (淺草)", "Shimokitazawa (下北澤)", "Kichijoji (吉祥寺)", 
+    "Asakusa / Skytree (淺草/晴空塔)", "Ginza / Tsukiji (銀座/築地)", "Tokyo Station (東京車站)", 
+    "Shibuya (澀谷)", "Shimokitazawa (下北澤)", "Kichijoji (吉祥寺)", 
     "Roppongi / Azabudai (六本木/麻布台)", "Harajuku / Omotesando (原宿/表參道)", 
     "Ebisu / Daikanyama (惠比壽/代官山)", "Yanaka / Ueno (谷中/上野)", 
-    "Akihabara (秋葉原)", "Tokyo Station (東京車站)", "Nakano (中野)", 
+    "Akihabara (秋葉原)", "Nakano (中野)", 
     "Shinjuku / Kabukicho (新宿/歌舞伎町)", "Others (其他)"
 )
 
 function Get-Category($filename) {
     $lowerName = $filename.ToLower()
-    foreach ($cat in $categories.Keys) {
+    foreach ($cat in $categoryOrder) {
+        if ($cat -eq "Others (其他)") { continue }
         foreach ($kw in $categories[$cat]) {
             if ($lowerName.Contains($kw.ToLower())) {
                 return $cat
@@ -46,6 +50,9 @@ foreach ($cat in $categoryOrder) {
 
 $totalItems = 0
 
+# Encode the directory path once
+$encodedImageDir = [uri]::EscapeDataString($IMAGE_DIR)
+
 foreach ($file in $files) {
     $cat = Get-Category $file.Name
     $titleRaw = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
@@ -58,7 +65,7 @@ foreach ($file in $files) {
         if ([string]::IsNullOrWhiteSpace($itemTitle)) { continue }
         
         $encodedName = [uri]::EscapeDataString($file.Name)
-        $imgSrc = "$IMAGE_DIR/$encodedName"
+        $imgSrc = "$encodedImageDir/$encodedName"
         $searchQuery = [uri]::EscapeDataString($itemTitle + " Tokyo")
         
         $htmlItem = @"
