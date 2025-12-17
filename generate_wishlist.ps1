@@ -75,7 +75,10 @@ foreach ($file in $files) {
                 <div class="item-title">$itemTitle</div>
                 <div class="item-tips">點擊圖片放大。</div>
                 <div class="item-hours"> 10:00 - 20:00</div>
-                <div class="item-link-container"><a href="https://www.google.com/search?q=$searchQuery" target="_blank" class="item-link"> Google Search</a></div>
+                <div class="item-link-container">
+                    <a href="https://www.google.com/search?q=$searchQuery" target="_blank" class="item-link"> Google Search</a>
+                    <a href="https://www.google.com/maps/search/?api=1&query=$searchQuery" target="_blank" class="item-link" style="margin-left: 5px;">📍 Map</a>
+                </div>
             </div>
             <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
         </div>
