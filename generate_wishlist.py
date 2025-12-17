@@ -196,7 +196,10 @@ def generate():
             # Note: We use the SAME image for all sub-items derived from one file
             
             # URL encode filename for src
-            img_src = f"{IMAGE_DIR}/{filename}"
+            encoded_image_dir = urllib.parse.quote(IMAGE_DIR)
+            encoded_filename = urllib.parse.quote(filename)
+            img_src = f"{encoded_image_dir}/{encoded_filename}"
+            search_query = urllib.parse.quote(display_title + ' Tokyo')
             
             html_item = f"""
         <div class="item-row">
@@ -205,7 +208,7 @@ def generate():
                 <div class="item-title">{display_title}</div>
                 <div class="item-tips">點擊圖片放大。</div>
                 <div class="item-hours">🕒 10:00 - 20:00</div>
-                <div class="item-link-container"><a href="https://www.google.com/search?q={{urllib.parse.quote(display_title + ' Tokyo')}}" target="_blank" class="item-link">🔍 Google Search</a></div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q={search_query}" target="_blank" class="item-link">🔍 Google Search</a></div>
             </div>
             <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
         </div>"""
