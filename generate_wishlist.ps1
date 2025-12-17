@@ -1,4 +1,4 @@
-$IMAGE_DIR = "additional places want to go"
+﻿$IMAGE_DIR = "additional places want to go"
 $OUTPUT_FILE = "Wishlist_Selection.html"
 
 $categories = @{
@@ -57,7 +57,8 @@ foreach ($file in $files) {
         $itemTitle = $item.Trim() -replace '_', ' '
         if ([string]::IsNullOrWhiteSpace($itemTitle)) { continue }
         
-        $imgSrc = "$IMAGE_DIR/" + $file.Name
+        $encodedName = [uri]::EscapeDataString($file.Name)
+        $imgSrc = "$IMAGE_DIR/$encodedName"
         $searchQuery = [uri]::EscapeDataString($itemTitle + " Tokyo")
         
         $htmlItem = @"
@@ -66,8 +67,8 @@ foreach ($file in $files) {
             <div class="item-middle">
                 <div class="item-title">$itemTitle</div>
                 <div class="item-tips">點擊圖片放大。</div>
-                <div class="item-hours">🕒 10:00 - 20:00</div>
-                <div class="item-link-container"><a href="https://www.google.com/search?q=$searchQuery" target="_blank" class="item-link">🔍 Google Search</a></div>
+                <div class="item-hours"> 10:00 - 20:00</div>
+                <div class="item-link-container"><a href="https://www.google.com/search?q=$searchQuery" target="_blank" class="item-link"> Google Search</a></div>
             </div>
             <div class="item-right"><label class="switch"><input type="checkbox" checked><span class="slider"></span></label><div class="status-text">已選擇</div></div>
         </div>
@@ -107,7 +108,7 @@ $htmlContent = @"
     .item-middle { flex-grow: 1; padding-right: 20px; }
     .item-title { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; color: #333; }
     .item-tips { font-size: 0.9em; color: #555; margin-bottom: 3px; display: flex; align-items: center; }
-    .item-tips::before { content: "💡"; margin-right: 5px; }
+    .item-tips::before { content: ""; margin-right: 5px; }
     .item-hours { font-size: 0.9em; color: #e65100; margin-bottom: 5px; display: flex; align-items: center; font-weight: 500; }
     .item-link-container { margin-top: 5px; }
     .item-link { font-size: 0.85em; color: #2E74B5; text-decoration: none; border: 1px solid #2E74B5; padding: 2px 8px; border-radius: 4px; transition: all 0.2s; display: inline-block; }
@@ -138,10 +139,10 @@ $htmlContent = @"
 <body>
 
 <div class="container">
-    <h1>📸 東京行程 Wishlist 圖片選擇器</h1>
+    <h1> 東京行程 Wishlist 圖片選擇器</h1>
     <p style="text-align: center; margin-bottom: 30px;">
         已拆分合併項目並加入營業時間。請勾選你想去的景點。<br>
-        <a href="https://github.com/KennyWongXX/tokyo/blob/master/Wishlist_Selection.html" target="_blank" style="color: #2E74B5; text-decoration: none; font-weight: bold; margin-top: 10px; display: inline-block;">🔗 View on GitHub</a>
+        <a href="https://github.com/KennyWongXX/tokyo/blob/master/Wishlist_Selection.html" target="_blank" style="color: #2E74B5; text-decoration: none; font-weight: bold; margin-top: 10px; display: inline-block;"> View on GitHub</a>
     </p>
 "@
 
